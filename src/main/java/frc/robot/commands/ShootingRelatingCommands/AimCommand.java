@@ -139,10 +139,7 @@ public class AimCommand extends CommandBase {
         aimTurretSpeed();
         refreshTurretPrecision();
 
-        if (aimWhileMove) {
-            turretPrecision *=3;
-            turretSpeed = MathUtil.clamp(Math.abs(x) / 25, .22, .6);
-        }
+ 
 
         if (tx > turretPrecision) {
             m_turret.spin(turretSpeed);
