@@ -5,12 +5,17 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.ShootingRelatingCommands.*;
 import frc.robot.commands.ShootingRelatingCommands.SpecificCommands.*;
+import frc.robot.commands.driveCommands.DriveDistanceCommand;
 import frc.robot.utils.MiscMath;
+
+import frc.robot.subsystems.Drive;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -35,6 +40,9 @@ public class Robot extends TimedRobot {
 
     public static double activateKicker = 0;
 
+    
+
+
     private final Drive m_drive = Drive.getInstance();
     private final Hood m_hood = Hood.getInstance();
     private final Vision m_vision = Vision.getInstance();
@@ -46,6 +54,8 @@ public class Robot extends TimedRobot {
     private final XboxController m_controller = new XboxController(1);
     private final Joystick m_stick = new Joystick(0);
 
+    
+
     private CommandBase m_auto;
     private final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<CommandBase>();
 
@@ -56,7 +66,7 @@ public class Robot extends TimedRobot {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
         m_autoChooser.addOption("2BA", new TwoBallAuto());
         m_autoChooser.addOption("3BA", new ThreeBallAuto());
-        m_autoChooser.addOption("Simple", new MoveAuto());
+        // m_autoChooser.addOption("Simple", new MoveAuto());
         m_autoChooser.addOption("T_5", new CCW5ball2022());
     }
 
@@ -70,6 +80,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto_Choice", m_autoChooser);
 
         Pressy.enableDigital(); // compressor has to be enabled manually
+
+
+            
 
         // Joystick
 
@@ -204,7 +217,10 @@ public class Robot extends TimedRobot {
      * This function is called periodically during operator control.
      */
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+  
+
+    }
 
     @Override
     public void testInit() {

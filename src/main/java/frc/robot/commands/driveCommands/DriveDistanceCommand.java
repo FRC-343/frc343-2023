@@ -6,17 +6,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Drive;
 
-public class DriveDistanceCommand extends CommandBase {
+public class DriveDistanceCommand extends CommandBase implements Runnable {
     private final Drive m_drive;
     private final double m_distance;
     private final double m_speed;
+   
 
     private Pose2d m_startPose = new Pose2d(0, 0, new Rotation2d(0));
 
     public DriveDistanceCommand(double distance, double speed) {
         m_drive = Drive.getInstance();
         addRequirements(m_drive);
-
         m_distance = distance;
         m_speed = speed;
     }
@@ -42,6 +42,12 @@ public class DriveDistanceCommand extends CommandBase {
     public boolean isFinished() {
         return m_drive.getPose().minus(m_startPose).getTranslation().getNorm() >= m_distance;
 
+    }
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

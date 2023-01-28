@@ -3,10 +3,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -18,6 +21,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.driveCommands.DriveDistanceCommand;
 import frc.robot.utils.MiscMath;
 
 public class Drive extends SubsystemBase {
@@ -30,6 +34,8 @@ public class Drive extends SubsystemBase {
     private static final boolean kGyroReversed = true;
 
     public static double avgSpeed = 0;
+
+    private String gyroString = "Gyro";
 
     private final Spark m_leftMaster = new Spark(0);
     private final Spark m_leftFollower = new Spark(1);
@@ -89,6 +95,7 @@ public class Drive extends SubsystemBase {
 
         SendableRegistry.setSubsystem(m_gyro, this.getClass().getSimpleName());
         SendableRegistry.setName(m_gyro, "Gyro Drive Thingy");
+
 
         SendableRegistry.setSubsystem(m_leftGroup, this.getClass().getSimpleName());
         SendableRegistry.setName(m_leftGroup, "Left Drive Wheel Group Thingy");
@@ -227,6 +234,13 @@ public class Drive extends SubsystemBase {
 
     @Override
     public void periodic() {
+        
+        SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
+
+
+
+
+
         if (m_PIDEnabled) {
             m_wheelSpeeds.leftMetersPerSecond = MiscMath.clamp(m_wheelSpeeds.leftMetersPerSecond, -m_maxOutput,
                     m_maxOutput);

@@ -7,8 +7,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 
+import java.io.ObjectOutputStream.PutField;
+
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -25,7 +28,10 @@ public class Kicker extends SubsystemBase {
     private final ColorSensorV3 m_color = new ColorSensorV3(I2C.Port.kOnboard);
 
     private final double kMinColorRatio = 1.3;
-    private String colorString = "";
+    private String RcolorString = "Red";
+    private String GcolorString = "Green";
+    private String BcolorString = "Blue";
+
 
     private Timer timerBadCargo = new Timer();
 
@@ -61,21 +67,12 @@ public class Kicker extends SubsystemBase {
         }
 
         // color sensor things
-        if (m_color.getRed() != 0 && m_color.getBlue() != 0) {
-            if (m_color.getRed() / m_color.getBlue() > kMinColorRatio) {
-                SmartDashboard.putString("color_detected", "red");
-                colorString = "Red";
-            } else if (m_color.getBlue() / m_color.getRed() > kMinColorRatio) {
-                SmartDashboard.putString("color_detected", "blue");
-                colorString = "Blue";
-            } else {
-                SmartDashboard.putString("color_detected", "None Colors there be");
-                colorString = "";
-            }
-        } else {
-            SmartDashboard.putString("color_detected", "color sensor is color blind");
-            colorString = "";
-        }
+      
+                SmartDashboard.putNumber(GcolorString, m_color.getGreen());
+                SmartDashboard.putNumber(RcolorString, m_color.getRed());
+                SmartDashboard.putNumber(BcolorString, m_color.getBlue());
+                
+       
 
         isRecentlyBadCargo(); // make sure the timer is triggered
     }
@@ -87,16 +84,17 @@ public class Kicker extends SubsystemBase {
     public boolean isBadCargo() { // returns true if wrong color
         boolean value;
 
-        if (DriverStation.getAlliance().equals(DriverStation.Alliance.valueOf("Invalid"))) { // check to see if the driver station is actually returninng a proper team color
-            value = false;
-            SmartDashboard.putString("color_detected", "Purple");
-        } else if (colorString.isBlank()) {
-            value = false;
-        } else if (!getCellDetector()) {
-            value = false;
-        } else {
-            value = !(DriverStation.getAlliance().equals(DriverStation.Alliance.valueOf(colorString)));
-        }
+        // if (DriverStation.getAlliance().equals(DriverStation.Alliance.valueOf("Invalid"))) { // check to see if the driver station is actually returninng a proper team color
+        //     value = false;
+        //     SmartDashboard.putString("color_detected", "Purple");
+        // } else if (colorString.isBlank()) {
+        //     value = false;
+        // } else if (!getCellDetector()) {
+        //     value = false;
+        // } else {
+        //     value = !(DriverStation.getAlliance().equals(DriverStation.Alliance.valueOf(colorString)));
+        // }
+        value = false;
         return value;
     }
 
