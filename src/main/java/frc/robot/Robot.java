@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -92,17 +93,17 @@ public class Robot extends TimedRobot {
 
         // Joystick buttons
 
-        new JoystickButton(m_stick, 10).whenPressed(new InstantCommand(m_intake::lower, m_intake));
-        new JoystickButton(m_stick, 11).whenPressed(new InstantCommand(m_intake::raise, m_intake));
+        new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
+        new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
 
         // Joystick Trigger
 
-        new JoystickButton(m_stick, 1).whenHeld(new IntakeCommand(.8))
-                .whenReleased(new Intake2Command(.8));
+        new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(.8))
+                .whileFalse(new Intake2Command(.8));
 
         // Other Joystick Buttons
 
-        new JoystickButton(m_stick, 3).whenPressed(new PresetTurretCommand(110));
+        new JoystickButton(m_stick, 3).onTrue(new PresetTurretCommand(110));
 
         // new JoystickButton(m_stick, 8).whenHeld(new RunCommand(m_vision::killYourEnimiesViaLEDS))
         //         .whenReleased(new RunCommand(() -> m_vision.setLEDS(true)));
@@ -123,23 +124,23 @@ public class Robot extends TimedRobot {
 
         // Controller Triggers/Bumpers
 
-        new Button(() -> m_controller.getRightTriggerAxis() > 0.2).whenHeld(new AimShootCommand()); // shooter
+        new Trigger(() -> m_controller.getRightTriggerAxis() > 0.2).onTrue(new AimShootCommand()); // shooter
 
-        new Button(() -> m_controller.getRightBumper())
-                .whenHeld(new SequentialCommandGroup(new InstantCommand(ShootCommand::useLowGoal), new ShootCommand())); // low goal
+        new Trigger(() -> m_controller.getRightBumper())
+                .onTrue(new SequentialCommandGroup(new InstantCommand(ShootCommand::useLowGoal), new ShootCommand())); // low goal
 
-        new Button(() -> m_controller.getLeftBumper()).whenHeld(new AimShootMoveCommand()); // Orbit
+        new Trigger(() -> m_controller.getLeftBumper()).onTrue(new AimShootMoveCommand()); // Orbit
 
-        new Button(() -> m_controller.getLeftTriggerAxis() > 0.2).whenHeld(new ShootSpecificSpeedCommand(65)); //set speed //TODO change this value to change constant speed
+        new Trigger(() -> m_controller.getLeftTriggerAxis() > 0.2).onTrue(new ShootSpecificSpeedCommand(65)); //set speed //TODO change this value to change constant speed
 
         // Controller Buttons
 
-        new Button(() -> m_controller.getYButton()).whenHeld(new IntakeCommand(-.3));
+        new Trigger(() -> m_controller.getYButton()).onTrue(new IntakeCommand(-.3));
 
-        new JoystickButton(m_controller, XboxController.Button.kX.value).whenPressed(new PresetHoodCommand(0, true));
+        new JoystickButton(m_controller, XboxController.Button.kX.value).onTrue(new PresetHoodCommand(0, true));
 
         new JoystickButton(m_controller, XboxController.Button.kBack.value)
-                .whenPressed(new InstantCommand(m_climbing::toBeOrNotToBe, m_climbing)); // toggle climber pnumatics
+                .onTrue(new InstantCommand(m_climbing::toBeOrNotToBe, m_climbing)); // toggle climber pnumatics
 
         // new JoystickButton(m_controller, XboxController.Button.kStart.value)
         //         .whenHeld(new AutoClimbCommand(false, false)); // climbing auto
@@ -147,12 +148,12 @@ public class Robot extends TimedRobot {
         // these two commands are weird, "activateKicker" is public, kicker subsystem will activate kicker based off of that var
         // this way manual control always overrides other things that are happening with the kicker
         new JoystickButton(m_controller, XboxController.Button.kA.value)
-                .whenPressed(new InstantCommand(() -> activateKicker = 1))
-                .whenReleased(new InstantCommand(() -> activateKicker = 0));
+                .onTrue(new InstantCommand(() -> activateKicker = 1))
+                .onFalse(new InstantCommand(() -> activateKicker = 0));
 
         new JoystickButton(m_controller, XboxController.Button.kB.value)
-                .whenPressed(new InstantCommand(() -> activateKicker = -1))
-                .whenReleased(new InstantCommand(() -> activateKicker = 0));
+                .onTrue(new InstantCommand(() -> activateKicker = -1))
+                .onFalse(new InstantCommand(() -> activateKicker = 0));
     }
 
     /**
