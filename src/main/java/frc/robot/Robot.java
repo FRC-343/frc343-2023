@@ -45,11 +45,8 @@ public class Robot extends TimedRobot {
 
 
     private final Drive m_drive = Drive.getInstance();
-    private final Hood m_hood = Hood.getInstance();
     private final Vision m_vision = Vision.getInstance();
-    private final Turret m_turret = Turret.getInstance();
     private final Intake m_intake = Intake.getInstance();
-    private final Climbing m_climbing = Climbing.getInstance();
     // shooter and kicker exist also, but are not needed in this file. They are still created though because other commands call the getInstance() method
 
     private final XboxController m_controller = new XboxController(1);
@@ -65,10 +62,7 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
-        m_autoChooser.addOption("2BA", new TwoBallAuto());
-        m_autoChooser.addOption("3BA", new ThreeBallAuto());
         // m_autoChooser.addOption("Simple", new MoveAuto());
-        m_autoChooser.addOption("T_5", new CCW5ball2022());
     }
 
     /**
@@ -103,7 +97,6 @@ public class Robot extends TimedRobot {
 
         // Other Joystick Buttons
 
-        new JoystickButton(m_stick, 3).onTrue(new PresetTurretCommand(110));
 
         // new JoystickButton(m_stick, 8).whenHeld(new RunCommand(m_vision::killYourEnimiesViaLEDS))
         //         .whenReleased(new RunCommand(() -> m_vision.setLEDS(true)));
@@ -113,35 +106,14 @@ public class Robot extends TimedRobot {
 
         // Controller joysticks
 
-        m_hood.setDefaultCommand(
-                new RunCommand(() -> m_hood.move(kMaxHoodSpeed * m_controller.getRightY()), m_hood));
 
-        m_turret.setDefaultCommand(
-                new RunCommand(() -> m_turret.spin(kMaxTurretSpeed * m_controller.getRightX()), m_turret));
-
-        m_climbing.setDefaultCommand(
-                new RunCommand(() -> m_climbing.setWinch(kMaxClimbingSpeed * m_controller.getLeftY()), m_climbing));
-
+       
         // Controller Triggers/Bumpers
 
-        new Trigger(() -> m_controller.getRightTriggerAxis() > 0.2).onTrue(new AimShootCommand()); // shooter
-
-        new Trigger(() -> m_controller.getRightBumper())
-                .onTrue(new SequentialCommandGroup(new InstantCommand(ShootCommand::useLowGoal), new ShootCommand())); // low goal
-
-        new Trigger(() -> m_controller.getLeftBumper()).onTrue(new AimShootMoveCommand()); // Orbit
-
-        new Trigger(() -> m_controller.getLeftTriggerAxis() > 0.2).onTrue(new ShootSpecificSpeedCommand(65)); //set speed //TODO change this value to change constant speed
-
-        // Controller Buttons
 
         new Trigger(() -> m_controller.getYButton()).onTrue(new IntakeCommand(-.3));
 
-        new JoystickButton(m_controller, XboxController.Button.kX.value).onTrue(new PresetHoodCommand(0, true));
-
-        new JoystickButton(m_controller, XboxController.Button.kBack.value)
-                .onTrue(new InstantCommand(m_climbing::toBeOrNotToBe, m_climbing)); // toggle climber pnumatics
-
+      
         // new JoystickButton(m_controller, XboxController.Button.kStart.value)
         //         .whenHeld(new AutoClimbCommand(false, false)); // climbing auto
 

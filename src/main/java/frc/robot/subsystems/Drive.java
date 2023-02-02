@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder;
 
 
 import edu.wpi.first.math.controller.PIDController;
@@ -37,6 +38,23 @@ public class Drive extends SubsystemBase {
 
     private String gyroString = "Gyro";
 
+    private final CANSparkMax m_leftFront = new CANSparkMax(1, MotorType.kBrushless);
+    private final CANSparkMax m_leftBack = new CANSparkMax(2, MotorType.kBrushless);
+    private final CANSparkMax m_rightFront = new CANSparkMax(1, MotorType.kBrushless);
+    private final CANSparkMax m_rightBack = new CANSparkMax(2, MotorType.kBrushless);
+
+    
+    private final RelativeEncoder m_rightFrontEncoder = m_rightFront
+            .getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    private final RelativeEncoder m_rightBackEncoder = m_rightBack
+            .getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    private final RelativeEncoder m_leftFrontEncoder = m_leftFront
+            .getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    private final RelativeEncoder m_leftBackEncoder = m_leftBack
+            .getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+
+        
+
     private final Spark m_leftMaster = new Spark(0);
     private final Spark m_leftFollower = new Spark(1);
     private final Spark m_rightMaster = new Spark(2);
@@ -47,8 +65,8 @@ public class Drive extends SubsystemBase {
 
     private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
 
-    private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftMaster, m_leftFollower);
-    private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightMaster, m_rightFollower);
+    private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
+    private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
 
     private final PIDController m_leftPIDController = new PIDController(2.0, 0, 0);
     private final PIDController m_rightPIDController = new PIDController(2.0, 0, 0);
