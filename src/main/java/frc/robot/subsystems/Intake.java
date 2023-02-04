@@ -45,8 +45,8 @@ public class Intake extends SubsystemBase {
         }
     } 
 
-    public static boolean isRunning() {
+     public static boolean isRunning() {
         return runningIntake;
-    }
+     }
 
 }

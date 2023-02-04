@@ -18,12 +18,20 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
+
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+
+
+
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
@@ -42,11 +50,13 @@ public class Robot extends TimedRobot {
     public static double activateKicker = 0;
 
     
-
+    private final Arm m_arm = Arm.getInstance();
 
     private final Drive m_drive = Drive.getInstance();
     private final Vision m_vision = Vision.getInstance();
     private final Intake m_intake = Intake.getInstance();
+    private final pincher m_Pincher = pincher.getInstance();
+
     // shooter and kicker exist also, but are not needed in this file. They are still created though because other commands call the getInstance() method
 
     private final XboxController m_controller = new XboxController(1);
@@ -77,7 +87,8 @@ public class Robot extends TimedRobot {
         Pressy.enableDigital(); // compressor has to be enabled manually
 
 
-            
+        m_arm.setDefaultCommand(
+            new RunCommand(() -> m_arm.setArm(kMaxClimbingSpeed * m_controller.getLeftY()), m_arm));
 
         // Joystick
 
@@ -90,6 +101,17 @@ public class Robot extends TimedRobot {
         new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
         new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
 
+
+        new JoystickButton(m_controller, XboxController.Button.kBack.value)
+        .onTrue(new InstantCommand(m_Pincher::toBeOrNotToBe, m_Pincher)); // toggle climber pnumatics
+
+
+
+
+
+
+
+        
         // Joystick Trigger
 
         new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(.8))
