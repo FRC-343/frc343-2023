@@ -18,7 +18,7 @@ import frc.robot.Robot;
 
 public class conveyor {
     private static final conveyor m_instance = new conveyor();
-    public static double activateShooter[] = { 0, 0 }; // bottom speed, top speed
+    
 
     private final Spark m_conveyor = new Spark(4);
 

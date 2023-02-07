@@ -105,7 +105,8 @@ public class Robot extends TimedRobot {
         new JoystickButton(m_controller, XboxController.Button.kBack.value)
         .onTrue(new InstantCommand(m_Pincher::toBeOrNotToBe, m_Pincher)); // toggle climber pnumatics
 
-
+        new JoystickButton(m_controller, XboxController.Button.kStart.value)
+        .onTrue(new InstantCommand(m_arm::MastMovment, m_arm));
 
 
 
