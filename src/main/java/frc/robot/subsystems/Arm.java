@@ -19,6 +19,8 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 public class Arm extends SubsystemBase{
    private static final Arm m_instance = new Arm();
 
+   private final DoubleSolenoid m_mast = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 3, 2);
+   
    
    private final DigitalInput m_isTop = new DigitalInput(17);
    private final DigitalInput m_isBottom = new DigitalInput(18);
@@ -28,11 +30,29 @@ public class Arm extends SubsystemBase{
     private static boolean runningArm = false;
 
     public Arm() {
+        SendableRegistry.setSubsystem(m_mast, this.getClass().getSimpleName());
+        SendableRegistry.setName(m_mast, "Mast pnumatics");
     }
     
     public static Arm getInstance() {
         return m_instance;
     }
+
+    public void disEngage() {
+        m_mast.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    public void engage() {
+        m_mast.set(DoubleSolenoid.Value.kForward);
+    }
+    public void MastMovment() {
+        if (m_mast.get() == DoubleSolenoid.Value.kReverse) {
+            engage();
+        } else {
+            disEngage();
+        }
+    }
+
 
     public boolean getTopLimit() {
         return m_isTop.get();
