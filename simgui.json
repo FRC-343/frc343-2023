@@ -1,0 +1,24 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [2]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto_Choice": "String Chooser",
+      "/SmartDashboard/bottom limit": "Digital Input",
+      "/SmartDashboard/top limit": "Digital Input"
+    }
+  },
+  "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    }
+  }
+}

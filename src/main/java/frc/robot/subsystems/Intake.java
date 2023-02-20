@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
     private static final Intake m_instance = new Intake();
 
-    private final DoubleSolenoid m_intakeLift = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 1, 0);
+    private final DoubleSolenoid m_intakeLift = new DoubleSolenoid( PneumaticsModuleType.REVPH, 3, 2);
     private final Spark m_intake = new Spark(6);
     private static boolean runningIntake = false;
 

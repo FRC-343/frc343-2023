@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -19,19 +20,29 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 public class Arm extends SubsystemBase{
    private static final Arm m_instance = new Arm();
 
-   private final DoubleSolenoid m_mast = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 3, 2);
+   private final DoubleSolenoid m_mast = new DoubleSolenoid(PneumaticsModuleType.REVPH, 4, 5);
+  
    
+   private final DigitalInput m_isTop = new DigitalInput(1);
+   private final DigitalInput m_isBottom = new DigitalInput(0);
    
-   private final DigitalInput m_isTop = new DigitalInput(17);
-   private final DigitalInput m_isBottom = new DigitalInput(18);
-   
-    private final CANSparkMax m_arm = new CANSparkMax(0, MotorType.kBrushless);
+    private final CANSparkMax m_arm = new CANSparkMax(1, MotorType.kBrushless);
     private final RelativeEncoder m_ArmEncoder = m_arm.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     private static boolean runningArm = false;
 
     public Arm() {
         SendableRegistry.setSubsystem(m_mast, this.getClass().getSimpleName());
         SendableRegistry.setName(m_mast, "Mast pnumatics");
+
+        SendableRegistry.setSubsystem(m_isTop, this.getClass().getSimpleName());
+        SendableRegistry.setName(m_isTop, "isTop");
+
+        SendableRegistry.setSubsystem(m_isBottom, this.getClass().getSimpleName());
+        SendableRegistry.setName(m_isBottom, "isbottom");
+        SmartDashboard.putData("top limit", m_isTop);
+        SmartDashboard.putData("bottom limit", m_isBottom);
+        SmartDashboard.putNumber("Encoder test", m_ArmEncoder.getPositionConversionFactor());
+
     }
     
     public static Arm getInstance() {
@@ -61,19 +72,27 @@ public class Arm extends SubsystemBase{
     public boolean getBottomLimit() {
         return m_isBottom.get();
     }
+    public void moveArm( double speed){
+        speed = 1;
 
+
+    }
     
     public void setArm(double speed) {
       
-        if (speed < 0.0 /*&& getLeftTopLimit()*/) {
-            m_arm.set(0.0);
-        } else if (speed > 0 /*&& (m_isRightBottom.get() || m_isLeftBottom.get())*/) {
-            m_arm.set(0.0);
-        } else {
-            m_arm.set(speed);
-        }
+         if (speed < 0.0 && getBottomLimit()) {
+             m_arm.set(0.0);
+         } else if (speed > 0 && (m_isTop.get())) {
+             m_arm.set(0.0);
+         } else {
+           m_arm.set(speed);
+         }
     }
+
+
+    
     } 
+    
 
 
 

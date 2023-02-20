@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
+import frc.robot.Robot;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,7 +19,10 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 public class pincher extends SubsystemBase {
     private static final pincher m_instance = new pincher();
 
-    private final DoubleSolenoid m_Pincher = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 3, 2);
+    private final DoubleSolenoid m_Pincher = new DoubleSolenoid( PneumaticsModuleType.REVPH , 0, 1);
+
+   
+  
 
     // private final CANSparkMax m = new CANSparkMax(0, MotorType.kBrushless);
     // private final RelativeEncoder m_ArmEncoder =

@@ -1,7 +1,7 @@
 package frc.robot.utils;
 
 public class MiscMath {
-    public static final double kDefaultDeadband = .08;
+    public static final double kDefaultDeadband = .09;
 
     public static double deadband(double value, double min) {
         if (Math.abs(value) > min) {

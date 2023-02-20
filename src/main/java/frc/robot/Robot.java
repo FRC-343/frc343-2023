@@ -3,8 +3,6 @@ package frc.robot;
 import frc.robot.autonomous.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import frc.robot.commands.ShootingRelatingCommands.*;
-import frc.robot.commands.ShootingRelatingCommands.SpecificCommands.*;
 import frc.robot.commands.driveCommands.DriveDistanceCommand;
 import frc.robot.utils.MiscMath;
 
@@ -12,6 +10,7 @@ import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -36,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Robot extends TimedRobot {
     public static final double kMaxJoySpeed = 3.0; // meters per sec
@@ -45,25 +45,26 @@ public class Robot extends TimedRobot {
     public static final double kMaxTurretSpeed = 0.6;
     public static final double kMaxClimbingSpeed = .8;
 
-    private static final Compressor Pressy = new Compressor(0, PneumaticsModuleType.CTREPCM);
+    // private static final Compressor Pressy = new Compressor(0, PneumaticsModuleType.REVPH);
 
     public static double activateKicker = 0;
 
-    
+
+
     private final Arm m_arm = Arm.getInstance();
 
     private final Drive m_drive = Drive.getInstance();
     private final Vision m_vision = Vision.getInstance();
     private final Intake m_intake = Intake.getInstance();
     private final pincher m_Pincher = pincher.getInstance();
-
+    private final conveyor m_Conveyor = conveyor.getInstance();
+    private final Dumper m_Dumper = Dumper.getInstance();
     // shooter and kicker exist also, but are not needed in this file. They are still created though because other commands call the getInstance() method
 
     private final XboxController m_controller = new XboxController(1);
     private final Joystick m_stick = new Joystick(0);
 
-    
-
+    private final Compressor pressy = new Compressor(PneumaticsModuleType.REVPH);
     private CommandBase m_auto;
     private final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<CommandBase>();
 
@@ -84,19 +85,22 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putData("Auto_Choice", m_autoChooser);
 
-        Pressy.enableDigital(); // compressor has to be enabled manually
 
+     pressy.enableDigital();
 
         m_arm.setDefaultCommand(
-            new RunCommand(() -> m_arm.setArm(kMaxClimbingSpeed * m_controller.getLeftY()), m_arm));
+            new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
 
         // Joystick
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
-                MiscMath.deadband(-m_stick.getY()),
-                kMaxJoyTurn * MiscMath.deadband(-m_stick.getX())), m_drive));
+                MiscMath.deadband(-m_stick.getY()/2),
+                kMaxJoyTurn * MiscMath.deadband(-m_stick.getX()/2)), m_drive));
 
         // Joystick buttons
+       
+        new JoystickButton(m_controller, XboxController.Button.kRightBumper.value)
+        .onTrue(new InstantCommand(m_Dumper::dump, m_Dumper));
 
         new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
         new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
@@ -107,9 +111,7 @@ public class Robot extends TimedRobot {
 
         new JoystickButton(m_controller, XboxController.Button.kStart.value)
         .onTrue(new InstantCommand(m_arm::MastMovment, m_arm));
-
-
-
+ 
 
 
         
@@ -118,6 +120,8 @@ public class Robot extends TimedRobot {
         new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(.8))
                 .whileFalse(new Intake2Command(.8));
 
+                new JoystickButton(m_stick, 1).whileTrue(new ConveyorCommand(-.8))
+                .whileFalse(new ConveyorCommand(0));
         // Other Joystick Buttons
 
 
@@ -142,13 +146,13 @@ public class Robot extends TimedRobot {
 
         // these two commands are weird, "activateKicker" is public, kicker subsystem will activate kicker based off of that var
         // this way manual control always overrides other things that are happening with the kicker
-        new JoystickButton(m_controller, XboxController.Button.kA.value)
-                .onTrue(new InstantCommand(() -> activateKicker = 1))
-                .onFalse(new InstantCommand(() -> activateKicker = 0));
+        // new JoystickButton(m_controller, XboxController.Button.kA.value)
+        //         .onTrue(new InstantCommand(() -> activateKicker = 1))
+        //         .onFalse(new InstantCommand(() -> activateKicker = 0));
 
         new JoystickButton(m_controller, XboxController.Button.kB.value)
-                .onTrue(new InstantCommand(() -> activateKicker = -1))
-                .onFalse(new InstantCommand(() -> activateKicker = 0));
+                .whileTrue(new ConveyorCommand(-.8))
+                .whileFalse(new ConveyorCommand(0));
     }
 
     /**
@@ -163,7 +167,9 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-    }
+
+          }
+    
 
     /**
      * This autonomous (along with the chooser code above) shows how to select
@@ -204,7 +210,7 @@ public class Robot extends TimedRobot {
         if (m_auto != null) {
             m_auto.cancel();
         }
-
+        
         m_drive.zeroHeading();
         m_vision.setLEDS(true);
     }
@@ -226,6 +232,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         m_vision.setLEDS(false);
+    
     }
 
     @Override

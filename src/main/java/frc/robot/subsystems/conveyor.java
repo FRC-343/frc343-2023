@@ -20,7 +20,7 @@ public class conveyor {
     private static final conveyor m_instance = new conveyor();
     
 
-    private final Spark m_conveyor = new Spark(4);
+    private final Spark m_conveyor = new Spark(9);
 
     private final DigitalInput m_cellDetector = new DigitalInput(14);
 
@@ -31,18 +31,7 @@ public class conveyor {
     private String GcolorString = "Green";
     private String BcolorString = "Blue";
     
-    private Timer timerBadCargo = new Timer();
-    public conveyor() {
-        m_conveyor.setInverted(true);
-
-        SendableRegistry.setSubsystem(m_conveyor, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_conveyor, "Kicker Motor");
-
-        SendableRegistry.setSubsystem(m_cellDetector, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_cellDetector, "cell detector for shooter/intake");
-        timerBadCargo.start();
-    }
-
+  
 
 
     
@@ -72,48 +61,16 @@ public class conveyor {
 
 
 
-        isRecentlyBadCargo(); // make sure the timer is triggered
     }
     public void setConveyor(double speed) {
         m_conveyor.set(speed);
     }
-public boolean isBadCargo() {
-boolean value;
-value=false;
 
-return value;
-}
-    
-    public boolean isRecentlyBadCargo(double time) {
-        if (isBadCargo()) {
-            timerBadCargo.start();
-            timerBadCargo.reset();
-        }
-        if (timerBadCargo.get() < time) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public boolean isRecentlyBadCargo() {
-        return isRecentlyBadCargo(.5);
-    }
-
-    public boolean getCellDetector() {
-        return m_cellDetector.get(); // true = ball in chamber
-    }
-
+  
     private void conveyorForIntake() {
-        if (!getCellDetector()) { // if no ball is in chamber run the kicker so it goes into chanber // room for
-                                  // the 2nd ball in the hopper
-
+        
             setConveyor(1.0);
-        } else { // getCellDectector: ball in chamber
-            setConveyor(0.0);
-
-    
-        }
-    
+     
     }
 
 

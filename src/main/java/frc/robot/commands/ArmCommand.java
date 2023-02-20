@@ -14,6 +14,7 @@ public class ArmCommand extends CommandBase {
         m_speed = speed;
         addRequirements(m_arm);
     }
+    
 
     @Override
     public void execute() {
@@ -28,18 +29,20 @@ public class ArmCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         boolean value = false;
-        if (m_speed > 0) { // positive speed is going down
-            if (m_arm.getBottomLimit()) {
-                value = true;
+         if (m_speed > 0) { // positive speed is going down
+             if (m_arm.getBottomLimit()) {
+                 value = true;
+             }
+         } else if (m_speed < 0) {
+             if (m_arm.getTopLimit()) {
+                 value = true;
+             }
             }
-        } else if (m_speed < 0) {
-            if (m_arm.getTopLimit()) {
-                value = true;
-            }
-        } else if (m_speed == 0) {
-            value = true;
-        }
+       if (m_speed == 0) {
+             value = true;
+         }
 
         return value;
     }
 }
+

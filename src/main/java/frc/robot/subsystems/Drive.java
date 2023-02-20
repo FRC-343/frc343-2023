@@ -38,10 +38,10 @@ public class Drive extends SubsystemBase {
 
     private String gyroString = "Gyro";
 
-    private final CANSparkMax m_leftFront = new CANSparkMax(1, MotorType.kBrushless);
-    private final CANSparkMax m_leftBack = new CANSparkMax(2, MotorType.kBrushless);
-    private final CANSparkMax m_rightFront = new CANSparkMax(1, MotorType.kBrushless);
-    private final CANSparkMax m_rightBack = new CANSparkMax(2, MotorType.kBrushless);
+    private final CANSparkMax m_leftFront = new CANSparkMax(2, MotorType.kBrushless);
+    private final CANSparkMax m_leftBack = new CANSparkMax(5, MotorType.kBrushless);
+    private final CANSparkMax m_rightFront = new CANSparkMax(3, MotorType.kBrushless);
+    private final CANSparkMax m_rightBack = new CANSparkMax(4, MotorType.kBrushless);
 
     
     private final RelativeEncoder m_rightFrontEncoder = m_rightFront
