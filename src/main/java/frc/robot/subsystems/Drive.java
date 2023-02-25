@@ -55,10 +55,6 @@ public class Drive extends SubsystemBase {
 
         
 
-    private final Spark m_leftMaster = new Spark(0);
-    private final Spark m_leftFollower = new Spark(1);
-    private final Spark m_rightMaster = new Spark(2);
-    private final Spark m_rightFollower = new Spark(3);
 
     private final Encoder m_leftEncoder = new Encoder(10, 11);
     private final Encoder m_rightEncoder = new Encoder(12, 13);
@@ -97,14 +93,6 @@ public class Drive extends SubsystemBase {
         m_rightGroup.setInverted(true);
         m_rightEncoder.setReverseDirection(true);
 
-        SendableRegistry.setSubsystem(m_leftMaster, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_leftMaster, "Left Master Drive Motor Thingy");
-        SendableRegistry.setSubsystem(m_rightMaster, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_rightMaster, "Right Master Drive Motor Thingy");
-        SendableRegistry.setSubsystem(m_leftFollower, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_leftFollower, "Left Follower Drive Motor Thingy");
-        SendableRegistry.setSubsystem(m_rightFollower, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_rightFollower, "Right Follower Drive Motor Thingy");
 
         SendableRegistry.setSubsystem(m_leftEncoder, this.getClass().getSimpleName());
         SendableRegistry.setName(m_leftEncoder, "Left Drive Encoder Thingy");

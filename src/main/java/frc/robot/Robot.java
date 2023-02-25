@@ -94,8 +94,8 @@ public class Robot extends TimedRobot {
         // Joystick
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
-                MiscMath.deadband(-m_stick.getY()/2),
-                kMaxJoyTurn * MiscMath.deadband(-m_stick.getX()/2)), m_drive));
+                MiscMath.deadband(m_stick.getY()/-2),
+                kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-2)), m_drive));
 
         // Joystick buttons
        
