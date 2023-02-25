@@ -38,8 +38,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Robot extends TimedRobot {
-    public static final double kMaxJoySpeed = 3.0; // meters per sec
-    public static final double kMaxJoyTurn = 5.0; // radians per sec
+    public  double kMaxJoySpeed = 3.0; // meters per sec
+    public  double kMaxJoyTurn = 5.0; // radians per sec
     public static final double kMaxHoodSpeed = 0.8; // ratio
     public static final double kMaxWinchSpeed = 1.0;
     public static final double kMaxTurretSpeed = 0.6;
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
     // shooter and kicker exist also, but are not needed in this file. They are still created though because other commands call the getInstance() method
 
     private final XboxController m_controller = new XboxController(1);
-    private final Joystick m_stick = new Joystick(0);
+    public final Joystick m_stick = new Joystick(0);
 
     private final Compressor pressy = new Compressor(PneumaticsModuleType.REVPH);
     private CommandBase m_auto;
@@ -92,6 +92,13 @@ public class Robot extends TimedRobot {
             new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
 
         // Joystick
+        if(m_stick.getRawButton(8)){
+            kMaxJoySpeed = 1.0;
+            kMaxJoyTurn = 3.0;
+        }if(m_stick.getRawButton(9)){
+            kMaxJoySpeed = 3.0;
+            kMaxJoyTurn = 5.0;
+        }
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
                 MiscMath.deadband(m_stick.getY()/-2),
