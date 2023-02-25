@@ -23,10 +23,10 @@
    private static final double kWaitTime = 10;
    
 
-   public MoveAuto() {
+   public AutoArmTest() {
      // commands in this autonomous
-    if(m_gyro.getAngle()>= 10||m_gyro.getAngle()<= -10){
-     new DriveDistanceCommand(1.1, 3);
-    }
+    // if(m_gyro.getAngle()>= 10||m_gyro.getAngle()<= -10){
+    //  new DriveDistanceCommand(1.1, 3);
+    // }
    }
  }
