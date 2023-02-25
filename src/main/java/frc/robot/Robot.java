@@ -38,8 +38,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Robot extends TimedRobot {
-    public  double kMaxJoySpeed = 3.0; // meters per sec
-    public  double kMaxJoyTurn = 5.0; // radians per sec
+    public  double kMaxJoySpeed; // meters per sec
+    public  double kMaxJoyTurn; // radians per sec
     public static final double kMaxHoodSpeed = 0.8; // ratio
     public static final double kMaxWinchSpeed = 1.0;
     public static final double kMaxTurretSpeed = 0.6;
