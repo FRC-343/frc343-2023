@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,10 +59,10 @@ public class Drive extends SubsystemBase {
         
 
 
-    private final Encoder m_leftEncoder = new Encoder(10, 11);
-    private final Encoder m_rightEncoder = new Encoder(12, 13);
+    // private final Encoder m_leftEncoder = new Encoder(10, 11);
+    // private final Encoder m_rightEncoder = new Encoder(12, 13);
 
-    private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+    private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
     private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
     private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
@@ -85,22 +85,26 @@ public class Drive extends SubsystemBase {
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
         // resolution.
-        m_leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
-        m_rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
-
+        // m_leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / 42);
+        // m_rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / 42);
+    
+        m_leftFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 42);
+        m_rightFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 42);
+    
         resetEncoders();
         m_gyro.reset();
+
 
         m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_maxOutput, m_maxOutput);
 
         m_rightGroup.setInverted(true);
-        m_rightEncoder.setReverseDirection(true);
+        
+    
 
-
-        SendableRegistry.setSubsystem(m_leftEncoder, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_leftEncoder, "Left Drive Encoder Thingy");
-        SendableRegistry.setSubsystem(m_rightEncoder, this.getClass().getSimpleName());
-        SendableRegistry.setName(m_rightEncoder, "Right Drive Encoder Thingy");
+        // SendableRegistry.setSubsystem(m_leftEncoder, this.getClass().getSimpleName());
+        // SendableRegistry.setName(m_leftEncoder, "Left Drive Encoder Thingy");
+        // SendableRegistry.setSubsystem(m_rightEncoder, this.getClass().getSimpleName());
+        // SendableRegistry.setName(m_rightEncoder, "Right Drive Encoder Thingy");
 
         SendableRegistry.setSubsystem(m_gyro, this.getClass().getSimpleName());
         SendableRegistry.setName(m_gyro, "Gyro Drive Thingy");
@@ -159,7 +163,7 @@ public class Drive extends SubsystemBase {
      * @return The current wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+        return new DifferentialDriveWheelSpeeds(m_leftFrontEncoder.getPosition(), m_rightFrontEncoder.getPosition());
     }
 
     public static double getSpeed() {
@@ -181,8 +185,13 @@ public class Drive extends SubsystemBase {
      * Resets the drive encoders to currently read a position of 0.
      */
     public void resetEncoders() {
-        m_leftEncoder.reset();
-        m_rightEncoder.reset();
+        // m_leftEncoder.reset();
+        // m_rightEncoder.reset();
+
+        m_leftFrontEncoder.setPosition(0);
+        m_rightFrontEncoder.setPosition(0);
+         m_leftBackEncoder.setPosition(0);
+        m_rightBackEncoder.setPosition(0);
     }
 
     public void resetPID() {
@@ -198,6 +207,7 @@ public class Drive extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
+       
     }
 
     /**
@@ -247,9 +257,12 @@ public class Drive extends SubsystemBase {
     public void periodic() {
         
         SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
+        SmartDashboard.putNumber("Gyro Test", m_gyro.getXFilteredAccelAngle());
+        SmartDashboard.putNumber("Right Encoder", m_rightFrontEncoder.getPosition());
+        SmartDashboard.putNumber("Left Encoder", m_leftFrontEncoder.getPosition());
+        SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());
 
-
-
+        SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelZ());
 
 
         if (m_PIDEnabled) {
@@ -261,9 +274,9 @@ public class Drive extends SubsystemBase {
             double leftFeedforward = m_leftFeedforward.calculate(m_wheelSpeeds.leftMetersPerSecond);
             double rightFeedforward = m_rightFeedforward.calculate(m_wheelSpeeds.rightMetersPerSecond);
 
-            double leftPIDOutput = m_leftPIDController.calculate(m_leftEncoder.getRate(),
+            double leftPIDOutput = m_leftPIDController.calculate(m_leftFrontEncoder.getPosition(),
                     m_wheelSpeeds.leftMetersPerSecond);
-            double rightPIDOutput = m_rightPIDController.calculate(m_rightEncoder.getRate(),
+            double rightPIDOutput = m_rightPIDController.calculate(m_rightFrontEncoder.getPosition(),
                     m_wheelSpeeds.rightMetersPerSecond);
 
             double leftOutput = leftPIDOutput + leftFeedforward;
@@ -274,10 +287,10 @@ public class Drive extends SubsystemBase {
         }
 
         // Update the odometry in the periodic block
-        m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getDistance(),
-                m_rightEncoder.getDistance());
+        m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftFrontEncoder.getPosition(),
+                m_rightFrontEncoder.getPosition());
 
-        avgSpeed = (m_leftEncoder.getRate() + m_rightEncoder.getRate()) / 2;
+        avgSpeed = (m_leftFrontEncoder.getVelocity() + m_rightFrontEncoder.getVelocity()) / 2;
 
     }
 }

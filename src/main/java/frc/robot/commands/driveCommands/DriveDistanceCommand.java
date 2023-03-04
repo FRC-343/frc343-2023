@@ -2,6 +2,7 @@ package frc.robot.commands.driveCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Drive;
@@ -41,7 +42,6 @@ public class DriveDistanceCommand extends CommandBase implements Runnable {
     @Override
     public boolean isFinished() {
         return m_drive.getPose().minus(m_startPose).getTranslation().getNorm() >= m_distance;
-
     }
 
     @Override

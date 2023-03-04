@@ -1,6 +1,6 @@
 package frc.robot.utils;
 public class MiscMath {
-    public static final double kDefaultDeadband = .06;
+    public static final double kDefaultDeadband = .07;
 
     public static double deadband(double value, double min) {
         return Math.abs(value) > min

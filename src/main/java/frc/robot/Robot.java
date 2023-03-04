@@ -38,8 +38,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Robot extends TimedRobot {
-    public  double kMaxJoySpeed; // meters per sec
-    public  double kMaxJoyTurn; // radians per sec
+    public  double kMaxJoySpeed = 3; // meters per sec
+    public  double kMaxJoyTurn = 5; // radians per sec
     public static final double kMaxHoodSpeed = 0.8; // ratio
     public static final double kMaxWinchSpeed = 1.0;
     public static final double kMaxTurretSpeed = 0.6;
@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
     private final pincher m_Pincher = pincher.getInstance();
     private final conveyor m_Conveyor = conveyor.getInstance();
     private final Dumper m_Dumper = Dumper.getInstance();
+    private final Spinner m_Spinner = Spinner.getInstance();
     // shooter and kicker exist also, but are not needed in this file. They are still created though because other commands call the getInstance() method
 
     private final XboxController m_controller = new XboxController(1);
@@ -73,7 +74,7 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
-        // m_autoChooser.addOption("Simple", new MoveAuto());
+        m_autoChooser.addOption("NOCHARGECUBE", new NOCGCUBE());
     }
 
     /**
@@ -90,24 +91,22 @@ public class Robot extends TimedRobot {
 
         m_arm.setDefaultCommand(
             new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
-
+           
+            m_Spinner.setDefaultCommand(
+                new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(4)), m_Spinner));
+            
         // Joystick
-        if(m_stick.getRawButton(8)){
-            kMaxJoySpeed = 1.0;
-            kMaxJoyTurn = 3.0;
-        }if(m_stick.getRawButton(9)){
-            kMaxJoySpeed = 3.0;
-            kMaxJoyTurn = 5.0;
-        }
+  
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
-                MiscMath.deadband(m_stick.getY()/-2),
-                kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-2)), m_drive));
+                MiscMath.deadband(m_stick.getY()),
+                kMaxJoyTurn * MiscMath.deadband(m_stick.getX())), m_drive));
 
         // Joystick buttons
        
         new JoystickButton(m_controller, XboxController.Button.kRightBumper.value)
-        .onTrue(new InstantCommand(m_Dumper::dump, m_Dumper));
+        .whileTrue(new InstantCommand(m_Dumper::engage, m_Dumper))
+        .whileFalse(new InstantCommand(m_Dumper::disEngage,m_Dumper));
 
         new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
         new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
@@ -120,7 +119,6 @@ public class Robot extends TimedRobot {
         .onTrue(new InstantCommand(m_arm::MastMovment, m_arm));
  
 
-
         
         // Joystick Trigger
 
@@ -129,6 +127,7 @@ public class Robot extends TimedRobot {
 
                 new JoystickButton(m_stick, 1).whileTrue(new ConveyorCommand(-.8))
                 .whileFalse(new ConveyorCommand(0));
+          
         // Other Joystick Buttons
 
 
@@ -216,6 +215,8 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         if (m_auto != null) {
             m_auto.cancel();
+            m_drive.resetEncoders();
+
         }
         
         m_drive.zeroHeading();
@@ -227,8 +228,13 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-  
-
+        if(m_stick.getRawButton(8)){
+            kMaxJoySpeed = 0.5;
+            kMaxJoyTurn = 0.5;
+        }if(m_stick.getRawButton(9)){
+            kMaxJoySpeed = 3.0;
+            kMaxJoyTurn = 5.0;
+        }
     }
 
     @Override
