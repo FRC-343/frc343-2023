@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder;
+
 
 
 import edu.wpi.first.math.controller.PIDController;
@@ -31,6 +33,7 @@ public class Drive extends SubsystemBase {
     private static final double kTrackWidth = 0.568; // meters
     private static final double kWheelRadius = 0.0762; // meters
     private static final int kEncoderResolution = 2048;
+    
 
     private static final boolean kGyroReversed = true;
 
@@ -67,13 +70,13 @@ public class Drive extends SubsystemBase {
     private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
     private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
 
-    private final PIDController m_leftPIDController = new PIDController(2.0, 0, 0);
-    private final PIDController m_rightPIDController = new PIDController(2.0, 0, 0);
+    private final PIDController m_leftPIDController = new PIDController(0.0032003, 0, 0.0002419);
+    private final PIDController m_rightPIDController = new PIDController(0.0031672, 0, 0.00017549);
 
     private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(kTrackWidth);
 
-    private final SimpleMotorFeedforward m_leftFeedforward = new SimpleMotorFeedforward(2.55, 2.84, 0.237);
-    private final SimpleMotorFeedforward m_rightFeedforward = new SimpleMotorFeedforward(2.58, 2.69, 0.0718);
+    private final SimpleMotorFeedforward m_leftFeedforward = new SimpleMotorFeedforward(0.11055, 1.3916, 0.16812);
+    private final SimpleMotorFeedforward m_rightFeedforward = new SimpleMotorFeedforward(0.08173, 1.3956, 0.067641);
 
     private DifferentialDriveOdometry m_odometry;
 
@@ -88,8 +91,8 @@ public class Drive extends SubsystemBase {
         // m_leftEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / 42);
         // m_rightEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / 42);
     
-        m_leftFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 42);
-        m_rightFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 42);
+        m_leftFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 1440);
+        m_rightFrontEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / 1440);
     
         resetEncoders();
         m_gyro.reset();
@@ -258,9 +261,10 @@ public class Drive extends SubsystemBase {
         
         SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
         SmartDashboard.putNumber("Gyro Test", m_gyro.getXFilteredAccelAngle());
-        SmartDashboard.putNumber("Right Encoder", m_rightFrontEncoder.getPosition());
+        SmartDashboard.putNumber("Right Encoder", -m_rightFrontEncoder.getPosition());
         SmartDashboard.putNumber("Left Encoder", m_leftFrontEncoder.getPosition());
         SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());
+        SmartDashboard.putNumber("Heading Test", getHeading());
 
         SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelZ());
 
@@ -276,7 +280,7 @@ public class Drive extends SubsystemBase {
 
             double leftPIDOutput = m_leftPIDController.calculate(m_leftFrontEncoder.getPosition(),
                     m_wheelSpeeds.leftMetersPerSecond);
-            double rightPIDOutput = m_rightPIDController.calculate(m_rightFrontEncoder.getPosition(),
+            double rightPIDOutput = m_rightPIDController.calculate(-m_rightFrontEncoder.getPosition(),
                     m_wheelSpeeds.rightMetersPerSecond);
 
             double leftOutput = leftPIDOutput + leftFeedforward;
@@ -288,7 +292,7 @@ public class Drive extends SubsystemBase {
 
         // Update the odometry in the periodic block
         m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftFrontEncoder.getPosition(),
-                m_rightFrontEncoder.getPosition());
+                -(m_rightFrontEncoder.getPosition()));
 
         avgSpeed = (m_leftFrontEncoder.getVelocity() + m_rightFrontEncoder.getVelocity()) / 2;
 

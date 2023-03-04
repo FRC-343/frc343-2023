@@ -13,28 +13,21 @@ import frc.robot.commands.driveCommands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
-public class NOCGCUBE extends SequentialCommandGroup {
+public class CUBECGTURN extends SequentialCommandGroup {
   private static final double kDriveSpeed = 1;
 
-  public NOCGCUBE() {
+  public CUBECGTURN() {
     Dumper m_Dumper = Dumper.getInstance();
-    pincher m_pincher = pincher.getInstance();
+  
     addCommands(
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(1),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.025, 2),
-            new InstantCommand(m_Dumper::disEngage, m_Dumper)),
-        new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.005, .5),
-            new IntakeCommand(),
-            new ConveyorCommand(-.8)),
-        new WaitCommand(1),
-        new ParallelDeadlineGroup(
-          new DriveDistanceCommand(.028, -2),
-          new InstantCommand(m_pincher::engage,m_pincher)),
-        new WaitCommand(1),
-        new InstantCommand(m_Dumper::engage, m_Dumper)
+            new DriveDistanceCommand(.005, 2),
+            new InstantCommand(m_Dumper::disEngage, m_Dumper)),      
+        new WaitCommand(.5),
+        new DriveTurnCommand(-80, 2)
     );
   }
 }
+

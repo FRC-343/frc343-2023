@@ -41,9 +41,9 @@ public class DriveTurnCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         if (m_rot > 0.0) {
-            return m_drive.getPose().minus(m_startPose).getRotation().getDegrees() >= m_rot; // works fine when rotating ccw, but rotates 180* when told 90 with negative speed
+            return m_drive.getHeading() >= m_rot; // works fine when rotating ccw, but rotates 180* when told 90 with negative speed
         } else if (m_rot < 0.0) {
-            return m_drive.getPose().minus(m_startPose).getRotation().getDegrees() <= m_rot;
+            return m_drive.getHeading() <= m_rot;
         } else { // m_rot == 0.0
             return true;
         }

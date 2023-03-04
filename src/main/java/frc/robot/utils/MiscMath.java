@@ -1,26 +1,26 @@
 package frc.robot.utils;
 public class MiscMath {
-    public static final double kDefaultDeadband = .07;
-
+    public static final double kDefaultDeadband = .27;
+    
     public static double deadband(double value, double min) {
-        return Math.abs(value) > min
-            ? value > 0.0 
-                ? ((value - min) / (1.0 - min)) 
-                : ((value + min) / (1.0 - min))
-            : 0.0;
-        // if (Math.abs(value) > min) {
-        //     // if (value > 0.0) {
-        //     //     return (value - min) / (1.0 - min);
-        //     // } else {
-        //     //     return (value + min) / (1.0 - min);
-        //     // }
-        //     return value > 0.0 
-        //         ? ((value - min) / (1.0 - min)) 
-        //         : ((value + min) / (1.0 - min));
-        // } else {
-        //     // if()
-        //     return 0.0;
-        // }
+       // return Math.abs(value) > min
+            // ? value > 0.0 
+            //     ? ((value - min) / (1.0 - min)) 
+            //     : ((value + min) / (1.0 - min))
+            // : 0.0;
+         if (Math.abs(value) > kDefaultDeadband) {
+              if (value > 0.0) {
+                  return (value - kDefaultDeadband);/// (1.0 - kDefaultDeadband);
+              } else {
+                  return (value + kDefaultDeadband);// (1.0 - kDefaultDeadband);
+              }
+            //  return value > 0.0 
+            //      ? ((value - min) / (1.0 - min)) 
+            //      : ((value + min) / (1.0 - min));
+         } else {
+              
+             return 0.0;
+         }
     }
 
     public static double deadband(double value) {

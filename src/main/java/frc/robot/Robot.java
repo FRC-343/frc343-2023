@@ -75,6 +75,7 @@ public class Robot extends TimedRobot {
     public Robot() {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
         m_autoChooser.addOption("NOCHARGECUBE", new NOCGCUBE());
+        m_autoChooser.addOption("CUBECHARGETURN", new CUBECGTURN());
     }
 
     /**
@@ -99,8 +100,8 @@ public class Robot extends TimedRobot {
   
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
-                MiscMath.deadband(m_stick.getY()),
-                kMaxJoyTurn * MiscMath.deadband(m_stick.getX())), m_drive));
+                MiscMath.deadband(m_stick.getY()/-.5),
+                kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-.5)), m_drive));
 
         // Joystick buttons
        

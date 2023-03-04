@@ -19,6 +19,7 @@ public class ArmCommand extends CommandBase {
     @Override
     public void execute() {
         m_arm.setArm(m_speed);
+        
     }
 
     @Override
