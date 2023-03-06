@@ -23,10 +23,10 @@ public class CUBECGTURN extends SequentialCommandGroup {
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(1),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.005, 2),
+            new DriveDistanceCommand(.013, 2.5),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)),      
-        new WaitCommand(.5),
-        new DriveTurnCommand(-80, 2)
+        new WaitCommand(.2),
+        new DriveTurnCommand(-70, 4)
     );
   }
 }

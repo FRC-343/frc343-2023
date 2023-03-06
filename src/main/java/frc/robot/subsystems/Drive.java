@@ -83,7 +83,7 @@ public class Drive extends SubsystemBase {
     private boolean m_PIDEnabled = false;
     private double m_maxOutput = 10.0;
     private DifferentialDriveWheelSpeeds m_wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(0.0, 0.0, 0.0));
-
+    private int m_saftey=0;
     public Drive() {
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
@@ -96,7 +96,7 @@ public class Drive extends SubsystemBase {
     
         resetEncoders();
         m_gyro.reset();
-
+      
 
         m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()), m_maxOutput, m_maxOutput);
 
@@ -248,6 +248,18 @@ public class Drive extends SubsystemBase {
         m_rightGroup.setVoltage(right);
         m_PIDEnabled = false;
     }
+     public void autoBal(){
+         if(m_gyro.getYComplementaryAngle() >= 8 /*& m_saftey == 0*/){
+            m_leftGroup.set(.4);
+            m_rightGroup.set(.4);
+            
+         }
+         if(m_gyro.getYComplementaryAngle()<=-8){
+            m_leftGroup.set(-.4);
+            m_rightGroup.set(-.4);
+            
+         }
+    }
 
     public void drive(double xSpeed, double rot) {
 
@@ -260,7 +272,7 @@ public class Drive extends SubsystemBase {
     public void periodic() {
         
         SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
-        SmartDashboard.putNumber("Gyro Test", m_gyro.getXFilteredAccelAngle());
+        SmartDashboard.putNumber("Gyro Test", m_gyro.getYComplementaryAngle());
         SmartDashboard.putNumber("Right Encoder", -m_rightFrontEncoder.getPosition());
         SmartDashboard.putNumber("Left Encoder", m_leftFrontEncoder.getPosition());
         SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());

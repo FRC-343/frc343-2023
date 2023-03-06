@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
             
         // Joystick
   
-
+    
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
                 MiscMath.deadband(m_stick.getY()/-.5),
                 kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-.5)), m_drive));
@@ -145,7 +145,7 @@ public class Robot extends TimedRobot {
         // Controller Triggers/Bumpers
 
 
-        new Trigger(() -> m_controller.getYButton()).onTrue(new IntakeCommand(-.3));
+        new Trigger(() -> m_controller.getYButton()).onTrue(new IntakeCommand(-.1));
 
       
         // new JoystickButton(m_controller, XboxController.Button.kStart.value)
@@ -236,6 +236,9 @@ public class Robot extends TimedRobot {
             kMaxJoySpeed = 3.0;
             kMaxJoyTurn = 5.0;
         }
+        if(m_stick.getRawButtonPressed(1) == true){
+            m_drive.setDefaultCommand(new RunCommand(() -> m_drive.autoBal(), m_drive));
+       }
     }
 
     @Override
