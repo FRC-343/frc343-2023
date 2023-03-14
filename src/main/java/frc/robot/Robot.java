@@ -75,7 +75,11 @@ public class Robot extends TimedRobot {
     public Robot() {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
         m_autoChooser.addOption("NOCHARGECUBE", new NOCGCUBE());
-        m_autoChooser.addOption("CUBECHARGETURN", new CUBECGTURN());
+        m_autoChooser.addOption("RED_CUBECHARGETURN", new CUBECGTURNRED());
+        m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
+        m_autoChooser.addOption("CUBEDUMP", new CUBEDUMP());
+        m_autoChooser.addOption("DUMPDRIVE", new DRIVEOUT());
+
     }
 
     /**
@@ -94,11 +98,12 @@ public class Robot extends TimedRobot {
             new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
            
             m_Spinner.setDefaultCommand(
-                new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(4)), m_Spinner));
+                new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)), m_Spinner));
+
             
         // Joystick
   
-    
+
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
                 MiscMath.deadband(m_stick.getY()/-.5),
                 kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-.5)), m_drive));
@@ -123,7 +128,7 @@ public class Robot extends TimedRobot {
         
         // Joystick Trigger
 
-        new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(.8))
+        new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(-.8))
                 .whileFalse(new Intake2Command(.8));
 
                 new JoystickButton(m_stick, 1).whileTrue(new ConveyorCommand(-.8))
@@ -219,9 +224,10 @@ public class Robot extends TimedRobot {
             m_drive.resetEncoders();
 
         }
-        
         m_drive.zeroHeading();
         m_vision.setLEDS(true);
+     
+
     }
 
     /**
@@ -236,9 +242,7 @@ public class Robot extends TimedRobot {
             kMaxJoySpeed = 3.0;
             kMaxJoyTurn = 5.0;
         }
-        if(m_stick.getRawButtonPressed(1) == true){
-            m_drive.setDefaultCommand(new RunCommand(() -> m_drive.autoBal(), m_drive));
-       }
+   
     }
 
     @Override
@@ -249,12 +253,13 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         m_vision.setLEDS(false);
+       
     
     }
 
     @Override
-    public void disabledPeriodic() {}
-
+    public void disabledPeriodic() {
+    }
     @Override
     public void simulationPeriodic() {}
 

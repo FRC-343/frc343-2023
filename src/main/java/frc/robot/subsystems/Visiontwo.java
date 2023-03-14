@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 //18.2 degrees
 
-public class Vision extends SubsystemBase {
-    private static final Vision m_instance = new Vision();
+public class Visiontwo extends SubsystemBase {
+    private static final Visiontwo m_instance = new Visiontwo();
 
-    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    private final NetworkTable table = NetworkTableInstance.create().getTable("limelighttwo");
     private final NetworkTableEntry tx = table.getEntry("tx");
     private final NetworkTableEntry ty = table.getEntry("ty");
 
-    public static Vision getInstance() {
+    public static Visiontwo getInstance() {
         return m_instance;
     }
 

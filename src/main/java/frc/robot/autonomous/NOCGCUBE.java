@@ -21,20 +21,27 @@ public class NOCGCUBE extends SequentialCommandGroup {
     pincher m_pincher = pincher.getInstance();
     addCommands(
         new InstantCommand(m_Dumper::engage, m_Dumper),
-        new WaitCommand(1),
+        new WaitCommand(.3),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.025, 2),
+            new DriveDistanceCommand(.023, 2),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)),
         new ParallelDeadlineGroup(
             new DriveDistanceCommand(.005, .5),
             new IntakeCommand(),
             new ConveyorCommand(-.8)),
-        new WaitCommand(1),
+        new WaitCommand(.4),
         new ParallelDeadlineGroup(
-          new DriveDistanceCommand(.028, -2),
+          new DriveDistanceCommand(.004, -.6),
+          new ConveyorCommand(-.8)),
+        new ParallelDeadlineGroup(
+          new DriveDistanceCommand(.0234, -1.5),
+          new WaitCommand(.2),
           new InstantCommand(m_pincher::engage,m_pincher)),
-        new WaitCommand(1),
-        new InstantCommand(m_Dumper::engage, m_Dumper)
+        new WaitCommand(.5),
+        new InstantCommand(m_Dumper::engage, m_Dumper),
+        new WaitCommand(.1),
+        new InstantCommand(m_Dumper::disEngage, m_Dumper)
+
     );
   }
 }

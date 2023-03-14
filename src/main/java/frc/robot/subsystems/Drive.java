@@ -11,8 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder;
-
-
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -84,6 +83,7 @@ public class Drive extends SubsystemBase {
     private double m_maxOutput = 10.0;
     private DifferentialDriveWheelSpeeds m_wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(0.0, 0.0, 0.0));
     private int m_saftey=0;
+    private int m_posneg=0;
     public Drive() {
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
@@ -248,17 +248,23 @@ public class Drive extends SubsystemBase {
         m_rightGroup.setVoltage(right);
         m_PIDEnabled = false;
     }
-     public void autoBal(){
-         if(m_gyro.getYComplementaryAngle() >= 8 /*& m_saftey == 0*/){
-            m_leftGroup.set(.4);
-            m_rightGroup.set(.4);
-            
-         }
-         if(m_gyro.getYComplementaryAngle()<=-8){
-            m_leftGroup.set(-.4);
-            m_rightGroup.set(-.4);
-            
-         }
+    public void brake(){
+        m_leftBack.setIdleMode(IdleMode.kBrake);
+        m_leftFront.setIdleMode(IdleMode.kBrake);
+        m_rightBack.setIdleMode(IdleMode.kBrake);
+        m_rightFront.setIdleMode(IdleMode.kBrake);
+    }
+    public void coast(){
+        m_leftBack.setIdleMode(IdleMode.kCoast);
+        m_leftFront.setIdleMode(IdleMode.kBrake);
+        m_rightBack.setIdleMode(IdleMode.kBrake);
+        m_rightFront.setIdleMode(IdleMode.kCoast);
+    }
+ 
+    
+    public void testspeed(){
+       m_gyro.reset();
+      
     }
 
     public void drive(double xSpeed, double rot) {
@@ -270,7 +276,7 @@ public class Drive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        
+        // SmartDashboard.
         SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
         SmartDashboard.putNumber("Gyro Test", m_gyro.getYComplementaryAngle());
         SmartDashboard.putNumber("Right Encoder", -m_rightFrontEncoder.getPosition());
@@ -278,7 +284,7 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());
         SmartDashboard.putNumber("Heading Test", getHeading());
 
-        SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelZ());
+        SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelY());
 
 
         if (m_PIDEnabled) {

@@ -17,7 +17,7 @@ public class IntakeCommand extends CommandBase {
     }
 
     public IntakeCommand() {
-        this(0.8, true); // defaults to .8 speed
+        this(-0.8, true); // defaults to .8 speed
     }
 
     public IntakeCommand(double intakeSpeed) {
