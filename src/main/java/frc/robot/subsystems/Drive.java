@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+import javax.swing.text.Position;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -36,6 +37,8 @@ public class Drive extends SubsystemBase {
 
     private static final boolean kGyroReversed = true;
 
+    private double negGoal = -18;
+    private double posGoal = 14;
     public static double avgSpeed = 0;
 
     private String gyroString = "Gyro";
@@ -260,10 +263,18 @@ public class Drive extends SubsystemBase {
         m_rightBack.setIdleMode(IdleMode.kBrake);
         m_rightFront.setIdleMode(IdleMode.kCoast);
     }
+    public void autoBal(){
+        if(m_gyro.getYComplementaryAngle()>=4){
+        setVoltages(m_leftPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal), 
+        m_rightPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal));
+
+        }
+    }
  
     
     public void testspeed(){
        m_gyro.reset();
+      
       
     }
 
@@ -278,7 +289,7 @@ public class Drive extends SubsystemBase {
     public void periodic() {
         // SmartDashboard.
         SmartDashboard.putNumber(gyroString, m_gyro.getAngle());
-        SmartDashboard.putNumber("Gyro Test", m_gyro.getYComplementaryAngle());
+        SmartDashboard.putNumber("Gyro Pitch", m_gyro.getYComplementaryAngle());
         SmartDashboard.putNumber("Right Encoder", -m_rightFrontEncoder.getPosition());
         SmartDashboard.putNumber("Left Encoder", m_leftFrontEncoder.getPosition());
         SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());

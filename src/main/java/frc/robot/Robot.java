@@ -7,7 +7,6 @@ import frc.robot.commands.driveCommands.DriveDistanceCommand;
 import frc.robot.utils.MiscMath;
 
 import frc.robot.subsystems.Drive;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticHub;
@@ -32,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.Button;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -98,7 +96,7 @@ public class Robot extends TimedRobot {
             new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
            
             m_Spinner.setDefaultCommand(
-                new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)), m_Spinner));
+                new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)*2.5), m_Spinner));
 
             
         // Joystick
@@ -109,6 +107,7 @@ public class Robot extends TimedRobot {
                 kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-.5)), m_drive));
 
         // Joystick buttons
+        new JoystickButton(m_stick, 3).whileTrue(new RunCommand(()-> m_drive.autoBal(), m_drive));
        
         new JoystickButton(m_controller, XboxController.Button.kRightBumper.value)
         .whileTrue(new InstantCommand(m_Dumper::engage, m_Dumper))

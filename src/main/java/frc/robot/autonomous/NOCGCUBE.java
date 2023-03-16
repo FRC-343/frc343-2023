@@ -34,8 +34,9 @@ public class NOCGCUBE extends SequentialCommandGroup {
           new DriveDistanceCommand(.004, -.6),
           new ConveyorCommand(-.8)),
         new ParallelDeadlineGroup(
-          new DriveDistanceCommand(.0234, -1.5),
+          new DriveDistanceCommand(.0234, -1.5),//0234
           new WaitCommand(.2),
+          new ConveyorCommand(-.8),
           new InstantCommand(m_pincher::engage,m_pincher)),
         new WaitCommand(.5),
         new InstantCommand(m_Dumper::engage, m_Dumper),
