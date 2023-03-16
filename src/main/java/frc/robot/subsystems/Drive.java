@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -36,6 +37,15 @@ public class Drive extends SubsystemBase {
     
 
     private static final boolean kGyroReversed = true;
+    
+    public double Speedvar=0.0;
+    public boolean chargestationbalance= false;
+    double setpoint = 0;
+    double errorSum = 0;
+    double lastTimestamp = 0;
+    double lastError = 0;
+    double berror=0;
+    double errorRate=0;
 
     private double negGoal = -18;
     private double posGoal = 14;
@@ -266,9 +276,46 @@ public class Drive extends SubsystemBase {
     public void autoBal(){
         if(m_gyro.getYComplementaryAngle()>=4){
         setVoltages(m_leftPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal), 
-        m_rightPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal));
+        m_rightPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal)); 
+     }
+         if (m_gyro.getYComplementaryAngle()<3 && m_gyro.getYComplementaryAngle()>-3){
+             chargestationbalance=true;
+             brake();
+             Speedvar=0;}
+        
+             else {
+                 setpoint = 0;
+        
+                 // get sensor position
+                 Double sensorPosition = m_gyro.getYComplementaryAngle();
+        
+                 // calculations
+                 berror = setpoint - sensorPosition;
+                 double dt = Timer.getFPGATimestamp() - lastTimestamp;
+        
+                 if (Math.abs(berror) < biLimit) {
+                 errorSum += berror * dt;
+                 }
+       
+                 errorRate = (berror - lastError) / dt;
+      
+                 Double outputSpeed = bkP * berror + bkI * errorSum + bkD * errorRate;
+        
+                 // output to motors
+                 Speedvar=(outputSpeed);
+        
+                 // update last- variables
+                 lastTimestamp = Timer.getFPGATimestamp();
+                 lastError = berror;
+         }
+                 if (Speedvar>.2){
+                     Speedvar=.2;
+                 }
+                
+                 if (Speedvar<-.2){
+                         Speedvar=-.2;
+                 }
 
-        }
     }
  
     
