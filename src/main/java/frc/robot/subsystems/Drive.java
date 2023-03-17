@@ -38,15 +38,17 @@ public class Drive extends SubsystemBase {
 
     private static final boolean kGyroReversed = true;
     
-    public double Speedvar=0.0;
-    public boolean chargestationbalance= false;
+    public double leftSpeedvar = 0.0;
+    public double rightSpeedvar= 0.0;
+    public boolean chargestationbalance = false;
     double setpoint = 0;
     double errorSum = 0;
     double lastTimestamp = 0;
     double lastError = 0;
-    double berror=0;
-    double errorRate=0;
-
+    double berror = 0;
+    double errorRate = 0;
+    double biLimit = 3 ;
+    
     private double negGoal = -18;
     private double posGoal = 14;
     public static double avgSpeed = 0;
@@ -281,7 +283,9 @@ public class Drive extends SubsystemBase {
          if (m_gyro.getYComplementaryAngle()<3 && m_gyro.getYComplementaryAngle()>-3){
              chargestationbalance=true;
              brake();
-             Speedvar=0;}
+             leftSpeedvar = 0;
+             rightSpeedvar = 0;
+            }
         
              else {
                  setpoint = 0;
@@ -293,27 +297,32 @@ public class Drive extends SubsystemBase {
                  berror = setpoint - sensorPosition;
                  double dt = Timer.getFPGATimestamp() - lastTimestamp;
         
-                 if (Math.abs(berror) < biLimit) {
+                 
+                if (Math.abs(berror) < biLimit) {
                  errorSum += berror * dt;
                  }
        
                  errorRate = (berror - lastError) / dt;
       
-                 Double outputSpeed = bkP * berror + bkI * errorSum + bkD * errorRate;
+                 Double leftoutputSpeed = m_leftPIDController.getP() * berror + m_leftPIDController.getI() * errorSum + m_leftPIDController.getD() * errorRate;
+                 Double RightoutputSpeed = m_rightPIDController.getP() * berror + m_rightPIDController.getI() * errorSum + m_rightPIDController.getD() * errorRate;
         
                  // output to motors
-                 Speedvar=(outputSpeed);
+                 leftSpeedvar=(leftoutputSpeed);
+                 rightSpeedvar = (RightoutputSpeed);
         
                  // update last- variables
                  lastTimestamp = Timer.getFPGATimestamp();
                  lastError = berror;
          }
-                 if (Speedvar>.2){
-                     Speedvar=.2;
+                 if (leftSpeedvar > .2 && rightSpeedvar > .2){
+                     leftSpeedvar = .2;
+                     rightSpeedvar = .2;
                  }
                 
-                 if (Speedvar<-.2){
-                         Speedvar=-.2;
+                 if (leftSpeedvar < -.2 && rightSpeedvar < -.2){
+                         leftSpeedvar = -.2;
+                         rightSpeedvar = -.2;
                  }
 
     }
