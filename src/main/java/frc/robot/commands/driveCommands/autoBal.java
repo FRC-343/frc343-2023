@@ -43,8 +43,9 @@ public class autoBal extends CommandBase implements Runnable{
 
     @Override
     public void execute() {
+        double pitch = m_drive.getPitch();
        
-        if (m_drive.getPitch() <3 && m_drive.getPitch()>-3){
+        if (pitch <3 && pitch>-3){
             chargestationbalance=true;
             m_drive.brake();
             leftSpeedvar = 0;
@@ -55,7 +56,7 @@ public class autoBal extends CommandBase implements Runnable{
                 setpoint = 0;
        
                 // get sensor position
-                Double sensorPosition = m_drive.getPitch();
+                Double sensorPosition = pitch;
        
                 // calculations
                 berror = setpoint - sensorPosition;
@@ -68,7 +69,7 @@ public class autoBal extends CommandBase implements Runnable{
       
                 errorRate = (berror - lastError) / dt;
      
-                Double leftoutputSpeed = m_drive.getleftP() * berror + m_drive.getleftI() * errorSum + m_drive.getleftD() * errorRate;
+                Double leftoutputSpeed = (m_drive.getleftP()*2) * berror + m_drive.getleftI() * errorSum + m_drive.getleftD() * errorRate;
                 Double RightoutputSpeed = m_drive.getRightP() * berror + m_drive.getRightI() * errorSum + m_drive.getRightD() * errorRate;
             
                 // output to motors
@@ -80,18 +81,19 @@ public class autoBal extends CommandBase implements Runnable{
                 lastTimestamp = Timer.getFPGATimestamp();
                 lastError = berror;
         }
-                if (leftSpeedvar > .2 && rightSpeedvar > .2){
-                    leftSpeedvar = .2;
-                    rightSpeedvar = .2;
-                }
+                // if (leftSpeedvar > .2 && rightSpeedvar > .2){
+                //     leftSpeedvar = .2;
+                //     rightSpeedvar = .2;
+                // }
                
-                if (leftSpeedvar < -.2 && rightSpeedvar < -.2){
-                        leftSpeedvar = -.2;
-                        rightSpeedvar = -.2;
-                }
+                // if (leftSpeedvar < -.2 && rightSpeedvar < -.2){
+                //         leftSpeedvar = -.2;
+                //         rightSpeedvar = -.2;
+                // }
      
-                m_drive.drive((leftSpeedvar+rightSpeedvar), 0);
-                
+                m_drive.drive(leftSpeedvar, 0);
+                m_drive.testLeftValue(leftSpeedvar);
+                m_drive.testRightValue(rightSpeedvar);
             }
      
     
