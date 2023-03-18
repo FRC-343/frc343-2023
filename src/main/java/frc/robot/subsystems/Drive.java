@@ -298,11 +298,7 @@ public class Drive extends SubsystemBase {
 
  
     
-    public void testspeed(){
-       m_gyro.reset();
-      
-      
-    }
+    
 
     public void drive(double xSpeed, double rot) {
 
@@ -320,8 +316,9 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Left Encoder", m_leftFrontEncoder.getPosition());
         SmartDashboard.putNumber("Motor test", m_leftFront.getBusVoltage());
         SmartDashboard.putNumber("Heading Test", getHeading());
-
         SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelY());
+
+       
 
 
         if (m_PIDEnabled) {

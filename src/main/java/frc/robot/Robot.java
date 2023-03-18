@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
                 kMaxJoyTurn * MiscMath.deadband(m_stick.getX()/-.5)), m_drive));
 
         // Joystick buttons
-        //  new JoystickButton(m_stick, 3).whileTrue(new autoBal());
+          new JoystickButton(m_stick, 3).whileTrue(new autoBal());
        
         new JoystickButton(m_controller, XboxController.Button.kRightBumper.value)
         .whileTrue(new InstantCommand(m_Dumper::engage, m_Dumper))

@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Drive;
@@ -36,28 +37,14 @@ public class autoBal extends CommandBase implements Runnable{
     @Override
     public void initialize() {
         m_startPose = m_drive.getPose();
+        m_drive.drive(0, 0);
 
     }
 
     @Override
     public void execute() {
-     
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        m_drive.drive(0, 0);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    public void run() {
-        // TODO Auto-generated method stub
-        if (m_drive.getPitch() <=3 && m_drive.getPitch()>-3){
+       
+        if (m_drive.getPitch() <3 && m_drive.getPitch()>-3){
             chargestationbalance=true;
             m_drive.brake();
             leftSpeedvar = 0;
@@ -65,14 +52,14 @@ public class autoBal extends CommandBase implements Runnable{
            }
        
             else {
-                setpoint = 14;
+                setpoint = 0;
        
                 // get sensor position
                 Double sensorPosition = m_drive.getPitch();
        
                 // calculations
                 berror = setpoint - sensorPosition;
-                double dt = Timer.getFPGATimestamp() - lastTimestamp;
+                double dt = Timer.getFPGATimestamp()- lastTimestamp;
        
                 
                if (Math.abs(berror) < biLimit) {
@@ -87,7 +74,7 @@ public class autoBal extends CommandBase implements Runnable{
                 // output to motors
                 leftSpeedvar=(leftoutputSpeed);
                 rightSpeedvar = (RightoutputSpeed);
-                  m_drive.setVoltages(leftSpeedvar, rightSpeedvar);
+                 
                 
                 // update last- variables
                 lastTimestamp = Timer.getFPGATimestamp();
@@ -103,7 +90,26 @@ public class autoBal extends CommandBase implements Runnable{
                         rightSpeedvar = -.2;
                 }
      
-   
+                m_drive.drive((leftSpeedvar+rightSpeedvar), 0);
+                
             }
+     
+    
+
+    @Override
+    public void end(boolean interrupted) {
+        m_drive.drive(0, 0);
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+
+    }
+
+}
