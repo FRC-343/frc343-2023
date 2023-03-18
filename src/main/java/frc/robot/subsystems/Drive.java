@@ -147,23 +147,23 @@ public class Drive extends SubsystemBase {
 
     }
     public double getleftP(){
-        return 0.03/*m_leftPIDController.getP()*/;
+        return 0.022/*m_leftPIDController.getP()*/;
     }
     public double getleftI(){
         return m_leftPIDController.getI();
     }
     public double getleftD(){
-        return 0/*m_leftPIDController.getD()*/;
+        return 0.01/*m_leftPIDController.getD()*/;
     }
-    public double getRightP(){
-        return 0.03/*m_rightPIDController.getP()*/;
-    }
-    public double getRightI(){
-        return m_rightPIDController.getI();
-    }
-    public double getRightD(){
-        return 0/*m_rightPIDController.getD()*/;
-    }
+    // public double getRightP(){
+    //     return 0.04/*m_rightPIDController.getP()*/;
+    // }
+    // public double getRightI(){
+    //     return m_rightPIDController.getI();
+    // }
+    // public double getRightD(){
+    //     return 0/*m_rightPIDController.getD()*/;
+    // }
     public double testLeftValue(double Lspeed){
          testleftSpeed = Lspeed;
         return Lspeed;

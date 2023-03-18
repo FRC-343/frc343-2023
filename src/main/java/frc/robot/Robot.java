@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
         m_autoChooser.addOption("CUBEDUMP", new CUBEDUMP());
         m_autoChooser.addOption("DUMPDRIVE", new DRIVEOUT());
+        m_autoChooser.addOption("AUTOBALCHARGE", new AUTOBALCHA());
 
     }
 
@@ -94,7 +95,7 @@ public class Robot extends TimedRobot {
      pressy.enableDigital();
 
         m_arm.setDefaultCommand(
-            new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-4), m_arm));
+            new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-2), m_arm));
            
             m_Spinner.setDefaultCommand(
                 new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)*2.5), m_Spinner));

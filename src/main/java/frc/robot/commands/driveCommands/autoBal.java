@@ -70,11 +70,11 @@ public class autoBal extends CommandBase implements Runnable{
                 errorRate = (berror - lastError) / dt;
      
                 Double leftoutputSpeed = (m_drive.getleftP()*2) * berror + m_drive.getleftI() * errorSum + m_drive.getleftD() * errorRate;
-                Double RightoutputSpeed = m_drive.getRightP() * berror + m_drive.getRightI() * errorSum + m_drive.getRightD() * errorRate;
+                //Double RightoutputSpeed = m_drive.getRightP() * berror + m_drive.getRightI() * errorSum + m_drive.getRightD() * errorRate;
             
                 // output to motors
                 leftSpeedvar=(leftoutputSpeed);
-                rightSpeedvar = (RightoutputSpeed);
+                //rightSpeedvar = (RightoutputSpeed);
                  
                 
                 // update last- variables
@@ -91,7 +91,7 @@ public class autoBal extends CommandBase implements Runnable{
                 //         rightSpeedvar = -.2;
                 // }
      
-                m_drive.drive(leftSpeedvar, 0);
+                m_drive.drive(-leftSpeedvar, 0);
                 m_drive.testLeftValue(leftSpeedvar);
                 m_drive.testRightValue(rightSpeedvar);
             }
