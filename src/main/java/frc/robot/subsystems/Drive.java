@@ -19,6 +19,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -79,13 +80,13 @@ public class Drive extends SubsystemBase {
     // private final Encoder m_leftEncoder = new Encoder(10, 11);
     // private final Encoder m_rightEncoder = new Encoder(12, 13);
 
-    private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+    public final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
     private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
     private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
 
-    private final PIDController m_leftPIDController = new PIDController(0.0032003, 0, 0.0002419);
-    private final PIDController m_rightPIDController = new PIDController(0.0031672, 0, 0.00017549);
+    public final PIDController m_leftPIDController = new PIDController(0.0032003, 0, 0.0002419);
+    public final PIDController m_rightPIDController = new PIDController(0.0031672, 0, 0.00017549);
 
     private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(kTrackWidth);
 
@@ -97,8 +98,7 @@ public class Drive extends SubsystemBase {
     private boolean m_PIDEnabled = false;
     private double m_maxOutput = 10.0;
     private DifferentialDriveWheelSpeeds m_wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(0.0, 0.0, 0.0));
-    private int m_saftey=0;
-    private int m_posneg=0;
+
     public Drive() {
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
@@ -141,7 +141,24 @@ public class Drive extends SubsystemBase {
         SendableRegistry.setName(m_rightPIDController, "Right Drive PID Controller Thingy");
 
     }
-
+    public double getleftP(){
+        return m_leftPIDController.getP();
+    }
+    public double getleftI(){
+        return m_leftPIDController.getI();
+    }
+    public double getleftD(){
+        return m_leftPIDController.getD();
+    }
+    public double getRightP(){
+        return m_rightPIDController.getP();
+    }
+    public double getRightI(){
+        return m_rightPIDController.getI();
+    }
+    public double getRightD(){
+        return m_rightPIDController.getD();
+    }
     public static Drive getInstance() {
         return m_instance;
     }
@@ -197,6 +214,9 @@ public class Drive extends SubsystemBase {
      */
     public void setMaxOutput(double maxOutput) {
         m_maxOutput = maxOutput;
+    }
+    public double getPitch(){
+        return m_gyro.getYComplementaryAngle();
     }
 
     /**
@@ -275,57 +295,7 @@ public class Drive extends SubsystemBase {
         m_rightBack.setIdleMode(IdleMode.kBrake);
         m_rightFront.setIdleMode(IdleMode.kCoast);
     }
-    public void autoBal(){
-        if(m_gyro.getYComplementaryAngle()>=4){
-        setVoltages(m_leftPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal), 
-        m_rightPIDController.calculate(m_gyro.getYComplementaryAngle(),posGoal)); 
-     }
-         if (m_gyro.getYComplementaryAngle()<3 && m_gyro.getYComplementaryAngle()>-3){
-             chargestationbalance=true;
-             brake();
-             leftSpeedvar = 0;
-             rightSpeedvar = 0;
-            }
-        
-             else {
-                 setpoint = 0;
-        
-                 // get sensor position
-                 Double sensorPosition = m_gyro.getYComplementaryAngle();
-        
-                 // calculations
-                 berror = setpoint - sensorPosition;
-                 double dt = Timer.getFPGATimestamp() - lastTimestamp;
-        
-                 
-                if (Math.abs(berror) < biLimit) {
-                 errorSum += berror * dt;
-                 }
-       
-                 errorRate = (berror - lastError) / dt;
-      
-                 Double leftoutputSpeed = m_leftPIDController.getP() * berror + m_leftPIDController.getI() * errorSum + m_leftPIDController.getD() * errorRate;
-                 Double RightoutputSpeed = m_rightPIDController.getP() * berror + m_rightPIDController.getI() * errorSum + m_rightPIDController.getD() * errorRate;
-        
-                 // output to motors
-                 leftSpeedvar=(leftoutputSpeed);
-                 rightSpeedvar = (RightoutputSpeed);
-        
-                 // update last- variables
-                 lastTimestamp = Timer.getFPGATimestamp();
-                 lastError = berror;
-         }
-                 if (leftSpeedvar > .2 && rightSpeedvar > .2){
-                     leftSpeedvar = .2;
-                     rightSpeedvar = .2;
-                 }
-                
-                 if (leftSpeedvar < -.2 && rightSpeedvar < -.2){
-                         leftSpeedvar = -.2;
-                         rightSpeedvar = -.2;
-                 }
 
-    }
  
     
     public void testspeed(){
