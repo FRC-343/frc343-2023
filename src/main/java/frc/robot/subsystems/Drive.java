@@ -49,6 +49,7 @@ public class Drive extends SubsystemBase {
     double berror = 0;
     double errorRate = 0;
     double biLimit = 3 ;
+
     
     private double negGoal = -18;
     private double posGoal = 14;
@@ -99,6 +100,10 @@ public class Drive extends SubsystemBase {
     private double m_maxOutput = 10.0;
     private DifferentialDriveWheelSpeeds m_wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(0.0, 0.0, 0.0));
 
+    double testleftSpeed;
+    double testrightSpeed;
+
+
     public Drive() {
         // Set the distance per pulse for the drive encoders. We can simply use the
         // distance traveled for one rotation of the wheel divided by the encoder
@@ -142,22 +147,30 @@ public class Drive extends SubsystemBase {
 
     }
     public double getleftP(){
-        return m_leftPIDController.getP();
+        return 0.03/*m_leftPIDController.getP()*/;
     }
     public double getleftI(){
         return m_leftPIDController.getI();
     }
     public double getleftD(){
-        return m_leftPIDController.getD();
+        return 0/*m_leftPIDController.getD()*/;
     }
     public double getRightP(){
-        return m_rightPIDController.getP();
+        return 0.03/*m_rightPIDController.getP()*/;
     }
     public double getRightI(){
         return m_rightPIDController.getI();
     }
     public double getRightD(){
-        return m_rightPIDController.getD();
+        return 0/*m_rightPIDController.getD()*/;
+    }
+    public double testLeftValue(double Lspeed){
+         testleftSpeed = Lspeed;
+        return Lspeed;
+    }
+    public double testRightValue(double Rspeed){
+        testrightSpeed = Rspeed;
+        return Rspeed;
     }
     public static Drive getInstance() {
         return m_instance;
@@ -318,6 +331,10 @@ public class Drive extends SubsystemBase {
         SmartDashboard.putNumber("Heading Test", getHeading());
         SmartDashboard.putNumber("ACCEL test", m_gyro.getAccelY());
 
+        SmartDashboard.putNumber("Drive Pitch", getPitch());
+
+         SmartDashboard.putNumber("left Speed from Auto bal", testleftSpeed);
+         SmartDashboard.putNumber("Right speed from Auto", testrightSpeed);
        
 
 
