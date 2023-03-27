@@ -79,6 +79,9 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("CUBEDUMP", new CUBEDUMP());
         m_autoChooser.addOption("DUMPDRIVE", new DRIVEOUT());
         m_autoChooser.addOption("AUTOBALCHARGE", new AUTOBALCHA());
+        m_autoChooser.addOption("THREECUBE", new THREECUBE());
+        m_autoChooser.addOption("GET OUT AUTO BAL", new AUTOBALMOBILE());
+        m_autoChooser.addOption("RED AUTO BAL", new REDAUTABAL_HEART());
 
     }
 

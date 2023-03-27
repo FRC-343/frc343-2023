@@ -23,7 +23,7 @@ public class DRIVEOUT extends SequentialCommandGroup {
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(1),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.0135, 3),
+            new DriveDistanceCommand(.021, 3),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)));
   }
 }

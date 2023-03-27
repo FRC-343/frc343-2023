@@ -13,19 +13,21 @@ import frc.robot.commands.driveCommands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
-public class AUTOBALCHA extends SequentialCommandGroup {
+public class AUTOBALMOBILE extends SequentialCommandGroup {
   private static final double kDriveSpeed = 1;
 
-  public AUTOBALCHA() {
+  public AUTOBALMOBILE() {
     Dumper m_Dumper = Dumper.getInstance();
   // Blue bumper tested
     addCommands(
-        new InstantCommand(m_Dumper::engage, m_Dumper),
-        new WaitCommand(2),
-        new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.012, 3),
-            new InstantCommand(m_Dumper::disEngage, m_Dumper)),      
+        new InstantCommand(m_Dumper::engage, m_Dumper), 
         new WaitCommand(.2),
+        new ParallelDeadlineGroup(
+            new DriveDistanceCommand(.022, 3),
+            new InstantCommand(m_Dumper::disEngage, m_Dumper)),      
+        new WaitCommand(.8),
+        new DriveDistanceCommand(.008, -1.5),
+        new WaitCommand(.1),
         new autoBal()
         
     );

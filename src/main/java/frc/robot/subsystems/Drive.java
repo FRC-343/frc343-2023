@@ -147,7 +147,7 @@ public class Drive extends SubsystemBase {
 
     }
     public double getleftP(){
-        return 0.022/*m_leftPIDController.getP()*/;
+        return 0.024/*m_leftPIDController.getP()*/;
     }
     public double getleftI(){
         return m_leftPIDController.getI();
