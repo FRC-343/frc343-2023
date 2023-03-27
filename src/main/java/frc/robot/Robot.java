@@ -74,8 +74,8 @@ public class Robot extends TimedRobot {
     public Robot() {
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
         m_autoChooser.addOption("NOCHARGECUBE", new NOCGCUBE());
-        m_autoChooser.addOption("RED_CUBECHARGETURN", new CUBECGTURNRED());
-        m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
+        // m_autoChooser.addOption("RED_CUBECHARGETURN", new CUBECGTURNRED());
+        // m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
         m_autoChooser.addOption("CUBEDUMP", new CUBEDUMP());
         m_autoChooser.addOption("DUMPDRIVE", new DRIVEOUT());
         m_autoChooser.addOption("AUTOBALCHARGE", new AUTOBALCHA());
