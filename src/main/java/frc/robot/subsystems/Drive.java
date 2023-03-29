@@ -85,14 +85,16 @@ public class Drive extends SubsystemBase {
 
     private final MotorControllerGroup m_leftGroup = new MotorControllerGroup(m_leftFront, m_leftBack);
     private final MotorControllerGroup m_rightGroup = new MotorControllerGroup(m_rightFront, m_rightBack);
-
-    public final PIDController m_leftPIDController = new PIDController(0.0032003, 0, 0.0002419);
-    public final PIDController m_rightPIDController = new PIDController(0.0031672, 0, 0.00017549);
+    // Left P:0.0032003 left D: 0.0002419
+    // Right P:0.0031672 Right D: 0.00017549
+    public final PIDController m_leftPIDController = new PIDController( 0.032916, 0, 0.0035753);
+    public final PIDController m_rightPIDController = new PIDController(0.028484, 0, 0.0019066);
 
     private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(kTrackWidth);
-
-    private final SimpleMotorFeedforward m_leftFeedforward = new SimpleMotorFeedforward(0.11055, 1.3916, 0.16812);
-    private final SimpleMotorFeedforward m_rightFeedforward = new SimpleMotorFeedforward(0.08173, 1.3956, 0.067641);
+// left (0.11055, 1.3916, 0.16812)
+// right (0.08173, 1.3956, 0.067641)
+    private final SimpleMotorFeedforward m_leftFeedforward = new SimpleMotorFeedforward(0.20355, 1.3481, 0.34343);
+    private final SimpleMotorFeedforward m_rightFeedforward = new SimpleMotorFeedforward(0.16381, 1.3406, 0.11434);
 
     private DifferentialDriveOdometry m_odometry;
 

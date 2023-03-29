@@ -82,7 +82,8 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("THREECUBE", new THREECUBE());
         m_autoChooser.addOption("GET OUT AUTO BAL", new AUTOBALMOBILE());
         m_autoChooser.addOption("RED AUTO BAL", new REDAUTABAL_HEART());
-
+        m_autoChooser.addOption("TWO CUBE BAL", new BALTWOCUBE());
+        m_autoChooser.addOption("TURN TEST", new TURNTEST());
     }
 
     /**
