@@ -85,6 +85,7 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("RED NON-MOBILE AUTO BAL", new REDAUTABAL_HEART());
         m_autoChooser.addOption("RED TWO CUBE BAL", new RED_BALTWOCUBE());
         m_autoChooser.addOption("BLUE TWO CUBE BAL", new BLUE_BALTWOCUBE());
+        m_autoChooser.addOption("BLUE THREE CUBE", new BLUE_THREECUBE());
         m_autoChooser.addOption("TURN TEST", new TURNTEST());   // remove before comp
     }
 
