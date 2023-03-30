@@ -26,7 +26,6 @@ public class AUTOBALMOBILE extends SequentialCommandGroup {
             new DriveDistanceCommand(.01, 3),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)), 
         new DriveDistanceCommand(.012, 1),
-
         new WaitCommand(.8),
         new DriveDistanceCommand(.008, -1.5),
         new WaitCommand(.1),

@@ -72,18 +72,20 @@ public class Robot extends TimedRobot {
     public static boolean kUseColorSensorIntake = true;
 
     public Robot() {
+            // Rename to what drive team wants
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
-        m_autoChooser.addOption("NOCHARGECUBE", new NOCGCUBE());
+        m_autoChooser.addOption("NOCHARGECUBE", new TWOCUBE());
         // m_autoChooser.addOption("RED_CUBECHARGETURN", new CUBECGTURNRED());
         // m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
-        m_autoChooser.addOption("CUBEDUMP", new CUBEDUMP());
-        m_autoChooser.addOption("DUMPDRIVE", new DRIVEOUT());
-        m_autoChooser.addOption("AUTOBALCHARGE", new AUTOBALCHA());
-        m_autoChooser.addOption("THREECUBE", new THREECUBE());
-        m_autoChooser.addOption("GET OUT AUTO BAL", new AUTOBALMOBILE());
-        m_autoChooser.addOption("RED AUTO BAL", new REDAUTABAL_HEART());
-        m_autoChooser.addOption("TWO CUBE BAL", new BALTWOCUBE());
-        m_autoChooser.addOption("TURN TEST", new TURNTEST());
+        m_autoChooser.addOption("CUBEDUMP SIT", new CUBEDUMP());
+        m_autoChooser.addOption("CUBE DUMP MOBILE", new DRIVEOUT());
+        m_autoChooser.addOption("AUTO BAL CHARGE NOT MOBILE", new AUTOBALCHA());
+        m_autoChooser.addOption("RED THREE CUBE", new RED_THREECUBE());
+        m_autoChooser.addOption("MOBILE AUTO BAL", new AUTOBALMOBILE());
+        m_autoChooser.addOption("RED NON-MOBILE AUTO BAL", new REDAUTABAL_HEART());
+        m_autoChooser.addOption("RED TWO CUBE BAL", new RED_BALTWOCUBE());
+        m_autoChooser.addOption("BLUE TWO CUBE BAL", new BLUE_BALTWOCUBE());
+        m_autoChooser.addOption("TURN TEST", new TURNTEST());   // remove before comp
     }
 
     /**

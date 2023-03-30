@@ -13,35 +13,45 @@ import frc.robot.commands.driveCommands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
-public class NOCGCUBE extends SequentialCommandGroup {
+public class RED_THREECUBE extends SequentialCommandGroup {
   private static final double kDriveSpeed = 1;
 
-  public NOCGCUBE() {
+  public RED_THREECUBE() {
     Dumper m_Dumper = Dumper.getInstance();
     pincher m_pincher = pincher.getInstance();
     addCommands(
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(.3),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.023, 2),
+            new DriveDistanceCommand(.023, 3),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.005, .5),
+            new DriveDistanceCommand(.005, .7),
             new IntakeCommand(),
             new ConveyorCommand(-.8)),
-        new WaitCommand(.4),
+        new WaitCommand(.1),
         new ParallelDeadlineGroup(
-          new DriveDistanceCommand(.004, -.6),
+          new DriveDistanceCommand(.004, -.5),
+          new IntakeCommand(),
           new ConveyorCommand(-.8)),
         new ParallelDeadlineGroup(
-          new DriveDistanceCommand(.0234, -1.5),//0234
+          new DriveDistanceCommand(.018, -3),//0234
           new WaitCommand(.2),
-          new ConveyorCommand(-.8),
-          new InstantCommand(m_pincher::engage,m_pincher)),
-        new WaitCommand(.5),
+          new ConveyorCommand(-.8)),
+        new WaitCommand(.55),
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(.1),
-        new InstantCommand(m_Dumper::disEngage, m_Dumper)
+        new InstantCommand(m_Dumper::disEngage, m_Dumper),
+        new WaitCommand(.1),
+        new DriveDistanceCommand(.016, 3),
+        new WaitCommand(.2),
+        new DriveTurnCommand(-35, 3),
+        new WaitCommand(.1),
+        new ParallelDeadlineGroup(
+        new DriveDistanceCommand(.01, 1.5),
+        new IntakeCommand(),
+        new ConveyorCommand(-.8))
+
 
     );
   }
