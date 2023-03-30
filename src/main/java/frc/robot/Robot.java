@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     public Robot() {
             // Rename to what drive team wants
         m_autoChooser.setDefaultOption("No_Auto", new NoAutonomous());
-        m_autoChooser.addOption("NOCHARGECUBE", new TWOCUBE());
+        m_autoChooser.addOption("TWO CUBE", new TWOCUBE());
         // m_autoChooser.addOption("RED_CUBECHARGETURN", new CUBECGTURNRED());
         // m_autoChooser.addOption("BLUE_CUBECHARGETURN", new CUBECGTURNBLUE());
         m_autoChooser.addOption("CUBEDUMP SIT", new CUBEDUMP());
