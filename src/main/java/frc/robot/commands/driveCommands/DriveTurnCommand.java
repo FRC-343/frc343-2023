@@ -26,6 +26,7 @@ public class DriveTurnCommand extends CommandBase {
     public void initialize() {
         m_startPose = m_drive.getPose();
         m_drive.zeroHeading();
+        test = false;
 
         
     }

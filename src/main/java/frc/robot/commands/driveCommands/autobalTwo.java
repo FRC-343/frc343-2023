@@ -38,6 +38,7 @@ public class autobalTwo extends CommandBase implements Runnable{
     public void initialize() {
         m_startPose = m_drive.getPose();
         m_drive.drive(0, 0);
+        chargestationbalance = false;
 
     }
 
