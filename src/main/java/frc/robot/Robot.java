@@ -125,8 +125,8 @@ public class Robot extends TimedRobot {
         .whileFalse(new InstantCommand(m_Dumper::disEngage,m_Dumper));
 
         new JoystickButton(m_controller, XboxController.Button.kX.value)
-            .onTrue(new InstantCommand(m_Grayson::engage, m_Grayson))
-            .onFalse(new InstantCommand(m_Grayson::disEngage, m_Grayson));
+            .onTrue(new InstantCommand(m_Grayson::disEngage, m_Grayson))
+            .onFalse(new InstantCommand(m_Grayson::engage, m_Grayson));
 
         new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
         new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
