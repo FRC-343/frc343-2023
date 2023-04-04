@@ -1,5 +1,5 @@
 package frc.robot;
-//Reverse test 
+//Reverse test
 import frc.robot.autonomous.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
     private final Vision m_vision = Vision.getInstance();
     private final Intake m_intake = Intake.getInstance();
     private final pincher m_Pincher = pincher.getInstance();
+    private final grayson m_Grayson = grayson.getInstance();
     private final conveyor m_Conveyor = conveyor.getInstance();
     private final Dumper m_Dumper = Dumper.getInstance();
     private final Spinner m_Spinner = Spinner.getInstance();
@@ -104,13 +105,13 @@ public class Robot extends TimedRobot {
 
         m_arm.setDefaultCommand(
             new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-2), m_arm));
-           
+
             m_Spinner.setDefaultCommand(
                 new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)*2.5), m_Spinner));
 
-            
+
         // Joystick
-  
+
 
         m_drive.setDefaultCommand(new RunCommand(() -> m_drive.drive(kMaxJoySpeed *
                 MiscMath.deadband(m_stick.getY()/-.5),
@@ -118,10 +119,14 @@ public class Robot extends TimedRobot {
 
         // Joystick buttons
           new JoystickButton(m_stick, 3).whileTrue(new autoBal());
-       
+
         new JoystickButton(m_controller, XboxController.Button.kRightBumper.value)
         .whileTrue(new InstantCommand(m_Dumper::engage, m_Dumper))
         .whileFalse(new InstantCommand(m_Dumper::disEngage,m_Dumper));
+
+        new JoystickButton(m_controller, XboxController.Button.kX.value)
+            .onTrue(new InstantCommand(m_Grayson::engage, m_Grayson))
+            .onFalse(new InstantCommand(m_Grayson::disEngage, m_Grayson));
 
         new JoystickButton(m_stick, 10).onTrue(new InstantCommand(m_intake::lower, m_intake));
         new JoystickButton(m_stick, 11).onTrue(new InstantCommand(m_intake::raise, m_intake));
@@ -132,9 +137,9 @@ public class Robot extends TimedRobot {
 
         new JoystickButton(m_controller, XboxController.Button.kStart.value)
         .onTrue(new InstantCommand(m_arm::MastMovment, m_arm));
- 
 
-        
+
+
         // Joystick Trigger
 
         new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(-.8))
@@ -142,7 +147,7 @@ public class Robot extends TimedRobot {
 
                 new JoystickButton(m_stick, 1).whileTrue(new ConveyorCommand(-.8))
                 .whileFalse(new ConveyorCommand(0));
-          
+
         // Other Joystick Buttons
 
 
@@ -155,13 +160,13 @@ public class Robot extends TimedRobot {
         // Controller joysticks
 
 
-       
+
         // Controller Triggers/Bumpers
 
 
         new Trigger(() -> m_controller.getYButton()).onTrue(new IntakeCommand(-.1));
 
-      
+
         // new JoystickButton(m_controller, XboxController.Button.kStart.value)
         //         .whenHeld(new AutoClimbCommand(false, false)); // climbing auto
 
@@ -190,7 +195,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
           }
-    
+
 
     /**
      * This autonomous (along with the chooser code above) shows how to select
@@ -235,7 +240,7 @@ public class Robot extends TimedRobot {
         }
         m_drive.zeroHeading();
         m_vision.setLEDS(true);
-     
+
 
     }
 
@@ -251,7 +256,7 @@ public class Robot extends TimedRobot {
             kMaxJoySpeed = 3.0;
             kMaxJoyTurn = 5.0;
         }
-   
+
     }
 
     @Override
@@ -262,8 +267,8 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         m_vision.setLEDS(false);
-       
-    
+
+
     }
 
     @Override
