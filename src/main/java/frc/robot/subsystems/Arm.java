@@ -21,11 +21,11 @@ public class Arm extends SubsystemBase{
    private static final Arm m_instance = new Arm();
 
    private final DoubleSolenoid m_mast = new DoubleSolenoid(PneumaticsModuleType.REVPH, 4, 5);
-  
-   
+
+
    private final DigitalInput m_isTop = new DigitalInput(1);
    private final DigitalInput m_isBottom = new DigitalInput(0);
-   
+
     private final CANSparkMax m_arm = new CANSparkMax(1, MotorType.kBrushless);
     private final RelativeEncoder m_ArmEncoder = m_arm.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     private static boolean runningArm = false;
@@ -44,7 +44,7 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Encoder test", m_ArmEncoder.getPositionConversionFactor());
 
     }
-    
+
     public static Arm getInstance() {
         return m_instance;
     }
@@ -77,9 +77,9 @@ public class Arm extends SubsystemBase{
 
 
     }
-    
+
     public void setArm(double speed) {
-      
+
          if (speed < 0.0 && getBottomLimit()) {
              m_arm.set(0.0);
              m_ArmEncoder.setPosition(0);
@@ -91,9 +91,9 @@ public class Arm extends SubsystemBase{
     }
 
 
-    
-    } 
-    
+
+    }
+
 
 
 

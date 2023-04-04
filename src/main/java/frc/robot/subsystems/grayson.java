@@ -18,6 +18,7 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 
 public class grayson extends SubsystemBase {
     private static final grayson m_instance = new grayson();
+    private final Arm m_arm = Arm.getInstance();
 
     private final DoubleSolenoid m_Grayson = new DoubleSolenoid( PneumaticsModuleType.REVPH , 8, 9);
 
@@ -40,7 +41,9 @@ public class grayson extends SubsystemBase {
     }
 
     public void disEngage() {
-        m_Grayson.set(DoubleSolenoid.Value.kReverse);
+        if (m_arm.getBottomLimit()) {
+            m_Grayson.set(DoubleSolenoid.Value.kReverse);
+        }
     }
 
     public void engage() {
