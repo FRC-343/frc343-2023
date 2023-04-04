@@ -46,7 +46,10 @@ public class BLUE_BALTWOCUBE extends SequentialCommandGroup {
         new DriveDistanceCommand(.007, -2),
         new ConveyorCommand(-.8)),
         new WaitCommand(.1),
-        new autobalTwo(),               // Next lines were added this one was reg autobal
+        new ParallelDeadlineGroup( 
+        new autobalTwo(),
+        new ConveyorCommand(-.8),
+        new ArmCommand(-.2)),              
         new WaitCommand(.0001),
         new ParallelDeadlineGroup(
         new InstantCommand(m_Dumper::engage, m_Dumper),

@@ -82,6 +82,7 @@ public class Arm extends SubsystemBase{
       
          if (speed < 0.0 && getBottomLimit()) {
              m_arm.set(0.0);
+             m_ArmEncoder.setPosition(0);
          } else if (speed > 0 && (m_isTop.get())) {
              m_arm.set(0.0);
          } else {

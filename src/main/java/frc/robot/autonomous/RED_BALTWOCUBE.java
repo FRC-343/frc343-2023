@@ -46,7 +46,8 @@ public class RED_BALTWOCUBE extends SequentialCommandGroup {
         new WaitCommand(.000001),
         new ParallelDeadlineGroup(
           new autobalTwo(),               // Next lines were added this one was reg autobal
-          new ConveyorCommand(-.8)),
+          new ConveyorCommand(-.8),
+          new ArmCommand(-.2)),
         new WaitCommand(.1),
         new ParallelDeadlineGroup( 
           new autoBal(),
