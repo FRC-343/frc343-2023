@@ -1,6 +1,13 @@
 package frc.robot;
 //Reverse test
 import frc.robot.autonomous.*;
+import frc.robot.autonomous.Auto_Bal_Things.AUTOBALCHA;
+import frc.robot.autonomous.Auto_Bal_Things.AUTOBALMOBILE;
+import frc.robot.autonomous.Auto_Bal_Things.LEFTBALTWOCUBE;
+import frc.robot.autonomous.Auto_Bal_Things.REDAUTABAL_HEART;
+import frc.robot.autonomous.Auto_Bal_Things.RIGHTBALTWOCUBE;
+import frc.robot.autonomous.Auto_Bal_Things.TWOCUBETESTLEFT;
+import frc.robot.autonomous.Auto_Bal_Things.TWOCUBETESTRIGHT;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.driveCommands.DriveDistanceCommand;
@@ -91,6 +98,8 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("ARM MOVMENT TEST", new ARMTEST());
         m_autoChooser.addOption("Center Test", new CENTERTEST());
         m_autoChooser.addOption("TIME CONVEYOR TEST", new TIMEDCONVEYORTEST());
+        m_autoChooser.addOption("LEFT TWO CUBE BAL TEST", new TWOCUBETESTLEFT());
+        m_autoChooser.addOption("RIGHT TWO CUBE BAL TEST", new TWOCUBETESTRIGHT());
     }
 
     /**

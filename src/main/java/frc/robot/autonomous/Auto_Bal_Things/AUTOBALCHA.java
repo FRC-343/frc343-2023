@@ -1,4 +1,4 @@
-package frc.robot.autonomous;
+package frc.robot.autonomous.Auto_Bal_Things;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
