@@ -38,11 +38,18 @@ public class TWOCUBETESTLEFT extends SequentialCommandGroup {
            new IntakeCommand(),
            new ConveyorCommand(-.8)),
         new WaitCommand(.1),
-        new DriveTurnCommand(18, -4),   // Faster turn
+        new ParallelDeadlineGroup(
+        new DriveTurnCommand(18, -4),
+        new ConveyorCommand(-.8)),   // Faster turn
         new WaitCommand(.1),
+        new ConveyorTime(-.8, 1),
+        new ParallelDeadlineGroup(
         new DriveDistanceCommand(.007, -2),
+        new ConveyorCommand(-.8)),
         new WaitCommand(.1),
-        new autobalTwo(),               // Next lines were added this one was reg autobal
+        new ParallelDeadlineGroup(
+        new autobalTwo(),
+        new ConveyorCommand(-.8)),               // Next lines were added this one was reg autobal
         new WaitCommand(.0001),
         new InstantCommand(m_Dumper::engage, m_Dumper),
         new WaitCommand(.00001),
