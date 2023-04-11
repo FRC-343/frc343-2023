@@ -84,12 +84,13 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("RED THREE CUBE", new RED_THREECUBE());
         m_autoChooser.addOption("MOBILE AUTO BAL", new AUTOBALMOBILE());
         m_autoChooser.addOption("RED NON-MOBILE AUTO BAL", new REDAUTABAL_HEART());
-        m_autoChooser.addOption("RED TWO CUBE BAL", new RED_BALTWOCUBE());
-        m_autoChooser.addOption("BLUE TWO CUBE BAL", new BLUE_BALTWOCUBE());
+        m_autoChooser.addOption("RED TWO CUBE BAL", new RIGHTBALTWOCUBE());
+        m_autoChooser.addOption("BLUE TWO CUBE BAL", new LEFTBALTWOCUBE());
         m_autoChooser.addOption("BLUE THREE CUBE", new BLUE_THREECUBE());
         m_autoChooser.addOption("TURN TEST", new TURNTEST());   // remove before comp
         m_autoChooser.addOption("ARM MOVMENT TEST", new ARMTEST());
         m_autoChooser.addOption("Center Test", new CENTERTEST());
+        m_autoChooser.addOption("TIME CONVEYOR TEST", new TIMEDCONVEYORTEST());
     }
 
     /**

@@ -13,11 +13,12 @@ import frc.robot.commands.driveCommands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
-public class BLUE_BALTWOCUBE extends SequentialCommandGroup {
+public class LEFTBALTWOCUBE extends SequentialCommandGroup {
   private static final double kDriveSpeed = 1;
 
-  public BLUE_BALTWOCUBE() {
+  public LEFTBALTWOCUBE() {
     Dumper m_Dumper = Dumper.getInstance();
+    grayson m_Grayson = grayson.getInstance();
   // Needs test 
     addCommands(
         new InstantCommand(m_Dumper::engage, m_Dumper), 
@@ -49,7 +50,8 @@ public class BLUE_BALTWOCUBE extends SequentialCommandGroup {
         new ParallelDeadlineGroup( 
         new autobalTwo(),
         new ConveyorCommand(-.8),
-        new ArmCommand(-.2)),              
+        new ArmCommand(-.2),
+        new InstantCommand(m_Grayson::disEngage, m_Grayson)),              
         new WaitCommand(.0001),
         new ParallelDeadlineGroup(
         new InstantCommand(m_Dumper::engage, m_Dumper),
