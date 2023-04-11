@@ -37,8 +37,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Robot extends TimedRobot {
-    public  double kMaxJoySpeed = 3; // meters per sec
-    public  double kMaxJoyTurn = 5; // radians per sec
+    public  double kMaxJoySpeed = 4; // meters per sec
+    public  double kMaxJoyTurn = 6; // radians per sec
     public static final double kMaxHoodSpeed = 0.8; // ratio
     public static final double kMaxWinchSpeed = 1.0;
     public static final double kMaxTurretSpeed = 0.6;
@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("BLUE THREE CUBE", new BLUE_THREECUBE());
         m_autoChooser.addOption("TURN TEST", new TURNTEST());   // remove before comp
         m_autoChooser.addOption("ARM MOVMENT TEST", new ARMTEST());
+        m_autoChooser.addOption("Center Test", new CENTERTEST());
     }
 
     /**
@@ -249,13 +250,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        if(m_stick.getRawButton(8)){
-            kMaxJoySpeed = 0.5;
-            kMaxJoyTurn = 0.5;
-        }if(m_stick.getRawButton(9)){
-            kMaxJoySpeed = 3.0;
-            kMaxJoyTurn = 5.0;
-        }
+ 
 
     }
 

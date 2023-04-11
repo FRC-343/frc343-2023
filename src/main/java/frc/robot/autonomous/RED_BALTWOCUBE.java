@@ -18,6 +18,7 @@ public class RED_BALTWOCUBE extends SequentialCommandGroup {
 
   public RED_BALTWOCUBE() {
     Dumper m_Dumper = Dumper.getInstance();
+    grayson m_Grayson = grayson.getInstance();
   // 
     addCommands(
         new InstantCommand(m_Dumper::engage, m_Dumper), 
@@ -27,7 +28,7 @@ public class RED_BALTWOCUBE extends SequentialCommandGroup {
             new InstantCommand(m_Dumper::disEngage, m_Dumper)), 
         new DriveDistanceCommand(.01, 1.5), //Speed increase
         new WaitCommand(.1),
-        new DriveTurnCommand(-5, 4),   // Speed increase 
+        new DriveTurnCommand(-7, 4),   // Speed increase 
         new WaitCommand(.00001),  // way shorter wait time
         new ParallelDeadlineGroup(
           new DriveDistanceCommand(.008, 1.5),
@@ -48,7 +49,10 @@ public class RED_BALTWOCUBE extends SequentialCommandGroup {
           new autobalTwo(),               // Next lines were added this one was reg autobal
           new ConveyorCommand(-.8),
           new ArmCommand(-.2)),
-        new WaitCommand(.1),
+          new InstantCommand(m_Grayson::disEngage, m_Grayson),
+        new WaitCommand(.3),
+        new InstantCommand(m_Grayson::engage),
+        new WaitCommand(.2),
         new ParallelDeadlineGroup( 
           new autoBal(),
           new InstantCommand(m_Dumper::engage, m_Dumper))

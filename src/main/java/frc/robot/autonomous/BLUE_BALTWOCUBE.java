@@ -27,7 +27,7 @@ public class BLUE_BALTWOCUBE extends SequentialCommandGroup {
             new InstantCommand(m_Dumper::disEngage, m_Dumper)), 
         new DriveDistanceCommand(.01, 1.5), //Speed increase
         new WaitCommand(.1),
-        new DriveTurnCommand(10, -4),   // Speed increase 
+        new DriveTurnCommand(15, -4),   // Speed increase 
         new WaitCommand(.00001),  // way shorter wait time
         new ParallelDeadlineGroup(
           new DriveDistanceCommand(.008, 1.5),
@@ -39,7 +39,7 @@ public class BLUE_BALTWOCUBE extends SequentialCommandGroup {
            new ConveyorCommand(-.8)),
         new WaitCommand(.1),
         new ParallelDeadlineGroup(
-        new DriveTurnCommand(-10, 4),
+        new DriveTurnCommand(-15, 4),
         new ConveyorCommand(-.8)),   // Faster turn
         new WaitCommand(.1),
         new ParallelDeadlineGroup( 
