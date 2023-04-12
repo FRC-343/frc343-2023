@@ -10,17 +10,21 @@ public class ConveyorTime extends CommandBase {
     private double m_speed;
     private final conveyor m_conveyor;
     private Timer t;
-    private double time;
+    private double m_time;
     
     public ConveyorTime(double speed, double time) {
         m_conveyor = conveyor.getInstance();
         m_speed = speed;
         t = new Timer();
-        this.time = time;
+        m_time = time;
     }
     
 
-    
+    @Override
+    public void initialize() {
+        t.reset();
+        t.start();
+    }
 
 
     @Override
@@ -35,7 +39,7 @@ public class ConveyorTime extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (t.get() >= time) {
+        if (t.get() >= m_time) {
             return true;
         } else {
             return false;

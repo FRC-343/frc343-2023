@@ -7,7 +7,7 @@ import frc.robot.autonomous.Auto_Bal_Things.LEFTBALTWOCUBE;
 import frc.robot.autonomous.Auto_Bal_Things.REDAUTABAL_HEART;
 import frc.robot.autonomous.Auto_Bal_Things.RIGHTBALTWOCUBE;
 import frc.robot.autonomous.Auto_Bal_Things.TWOCUBETESTLEFT;
-import frc.robot.autonomous.Auto_Bal_Things.TWOCUBETESTRIGHT;
+import frc.robot.autonomous.Auto_Bal_Things.TWOCUBETESTLEFT;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.driveCommands.DriveDistanceCommand;
@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("Center Test", new CENTERTEST());
         m_autoChooser.addOption("TIME CONVEYOR TEST", new TIMEDCONVEYORTEST());
         m_autoChooser.addOption("LEFT TWO CUBE BAL TEST", new TWOCUBETESTLEFT());
-        m_autoChooser.addOption("RIGHT TWO CUBE BAL TEST", new TWOCUBETESTRIGHT());
+        m_autoChooser.addOption("RIGHT TWO CUBE BAL TEST", new TWOCUBETESTLEFT());
     }
 
     /**
@@ -154,7 +154,7 @@ public class Robot extends TimedRobot {
         // Joystick Trigger
 
         new JoystickButton(m_stick, 1).whileTrue(new IntakeCommand(-.8))
-                .whileFalse(new Intake2Command(.8));
+                .whileFalse(new Intake2Command(-.8));
 
                 new JoystickButton(m_stick, 1).whileTrue(new ConveyorCommand(-.8))
                 .whileFalse(new ConveyorCommand(0));
@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
         //         .onFalse(new InstantCommand(() -> activateKicker = 0));
 
         new JoystickButton(m_controller, XboxController.Button.kB.value)
-                .whileTrue(new ConveyorCommand(-.8))
+                .whileTrue(new ConveyorCommand(-.6))
                 .whileFalse(new ConveyorCommand(0));
     }
 

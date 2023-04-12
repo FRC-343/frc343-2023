@@ -19,9 +19,9 @@ public class TIMEDCONVEYORTEST extends SequentialCommandGroup {
   public TIMEDCONVEYORTEST() {
     
     addCommands(
-     new ConveyorTime(-.8, 3),
+     new ConveyorTime(-.6, 2),
      new WaitCommand(3),
-     new ConveyorTime(-.8, 1)
+     new ConveyorTime(-.6, 1)
 
     );
   }
