@@ -24,7 +24,7 @@ public class LEFTBALTWOCUBE extends SequentialCommandGroup {
         new InstantCommand(m_Dumper::engage, m_Dumper), 
         new WaitCommand(.1),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.012, 3),
+            new DriveDistanceCommand(.020, 6),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)), 
         new DriveDistanceCommand(.01, 1.5), //Speed increase
         new WaitCommand(.1),
@@ -51,7 +51,9 @@ public class LEFTBALTWOCUBE extends SequentialCommandGroup {
         new autobalTwo(),
         new ConveyorCommand(-.8),
         new ArmCommand(-.2),
-        new InstantCommand(m_Grayson::disEngage, m_Grayson)),              
+        new InstantCommand(m_Grayson::disEngage, m_Grayson)),
+        new WaitCommand(.2),
+        new InstantCommand(m_Grayson::engage, m_Grayson),              
         new WaitCommand(.0001),
         new ParallelDeadlineGroup(
         new InstantCommand(m_Dumper::engage, m_Dumper),

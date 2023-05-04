@@ -41,7 +41,7 @@ public class grayson extends SubsystemBase {
     }
 
     public void disEngage() {
-        if (m_arm.getBottomLimit()) {
+        if (m_arm.getBottomLimit()|| m_arm.Armpos()>= 16) {
             m_Grayson.set(DoubleSolenoid.Value.kReverse);
         }
     }
@@ -57,5 +57,6 @@ public class grayson extends SubsystemBase {
             disEngage();
         }
     }
+ 
 
 }

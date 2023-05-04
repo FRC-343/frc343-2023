@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -92,8 +93,8 @@ public class Robot extends TimedRobot {
         m_autoChooser.addOption("RED THREE CUBE", new RED_THREECUBE());
         m_autoChooser.addOption("MOBILE AUTO BAL", new AUTOBALMOBILE());
         m_autoChooser.addOption("RED NON-MOBILE AUTO BAL", new REDAUTABAL_HEART());
-        m_autoChooser.addOption("RED TWO CUBE BAL", new RIGHTBALTWOCUBE());
-        m_autoChooser.addOption("BLUE TWO CUBE BAL", new LEFTBALTWOCUBE());
+        m_autoChooser.addOption("LEFT TWO CUBE BAL", new RIGHTBALTWOCUBE());
+        m_autoChooser.addOption("RIGHT TWO CUBE BAL", new LEFTBALTWOCUBE());
         m_autoChooser.addOption("BLUE THREE CUBE", new BLUE_THREECUBE());
         m_autoChooser.addOption("MOBILE CUBE INTAKE BOTH", new CUBEINTAKE());
         m_autoChooser.addOption("TURN TEST", new TURNTEST());   // remove before comp
@@ -117,7 +118,7 @@ public class Robot extends TimedRobot {
      pressy.enableDigital();
 
         m_arm.setDefaultCommand(
-            new RunCommand(() -> m_arm.setArm(m_controller.getLeftY()/-2), m_arm));
+            new RunCommand(() -> m_arm.setArm(  -m_controller.getLeftY()/1.5), m_arm));
 
             m_Spinner.setDefaultCommand(
                 new RunCommand(() -> m_Spinner.setSpinner(m_controller.getRawAxis(5)*2.5), m_Spinner));
@@ -262,7 +263,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
- 
+      
 
     }
 

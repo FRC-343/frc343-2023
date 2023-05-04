@@ -24,7 +24,7 @@ public class RIGHTBALTWOCUBE extends SequentialCommandGroup {
         new InstantCommand(m_Dumper::engage, m_Dumper), 
         new WaitCommand(.1),
         new ParallelDeadlineGroup(
-            new DriveDistanceCommand(.012, 3),
+            new DriveDistanceCommand(.020, 6),
             new InstantCommand(m_Dumper::disEngage, m_Dumper)), 
         new DriveDistanceCommand(.01, 1.5), //Speed increase
         new WaitCommand(.1),

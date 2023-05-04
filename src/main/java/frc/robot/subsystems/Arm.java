@@ -49,6 +49,16 @@ public class Arm extends SubsystemBase{
         return m_instance;
     }
 
+    public double Armpos(){
+        return m_ArmEncoder.getPosition();
+    }
+
+    public void resetEncoders(){
+        if(getBottomLimit() == true){
+            m_ArmEncoder.setPosition(0);
+        }
+    }
+
     public void disEngage() {
         m_mast.set(DoubleSolenoid.Value.kReverse);
     }
@@ -88,6 +98,11 @@ public class Arm extends SubsystemBase{
          } else {
            m_arm.set(speed);
          }
+    }
+    
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getPosition());
     }
 
 
